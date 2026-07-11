@@ -2,6 +2,12 @@
 # graders build the real thing themselves off this same repo - this just
 # catches a broken Dockerfile before submission instead of after, using
 # GitHub's bandwidth instead of whatever's left of mine.
+#
+# The build step alone only proves the image compiles. The run step below
+# actually exercises it against input/tasks.json, same as a real submission
+# would - needs FIREWORKS_API_KEY / FIREWORKS_BASE_URL / MODEL_EXPENSIVE set
+# as repo secrets (Settings > Secrets and variables > Actions), same values
+# as the local .env. Skipped on PRs since forked PRs don't get secrets.
 name: docker build
 
 on:
@@ -28,3 +34,44 @@ jobs:
 
       - name: Build image
         run: docker build -t track1-agent .
+
+      - name: Run against practice tasks
+        if: github.event_name != 'pull_request'
+        env:
+          FIREWORKS_API_KEY: ${{ secrets.FIREWORKS_API_KEY }}
+          FIREWORKS_BASE_URL: ${{ secrets.FIREWORKS_BASE_URL }}
+          MODEL_EXPENSIVE: ${{ secrets.MODEL_EXPENSIVE }}
+        run: |
+          mkdir -p ci_output
+          docker run --rm \
+            -e FIREWORKS_API_KEY -e FIREWORKS_BASE_URL -e MODEL_EXPENSIVE \
+            -v "$PWD/input:/input" -v "$PWD/ci_output:/output" \
+            track1-agent
+
+      - name: Check results.json looks right
+        if: github.event_name != 'pull_request'
+        run: |
+          python3 - <<'PYEOF'
+          import json
+
+          with open("ci_output/results.json") as f:
+              results = json.load(f)
+          with open("input/tasks.json") as f:
+              tasks = json.load(f)
+
+          task_ids = {t["task_id"] for t in tasks}
+          assert len(results) == len(tasks), f"got {len(results)} results for {len(tasks)} tasks"
+          for r in results:
+              assert set(r.keys()) == {"task_id", "answer"}, r
+              assert r["task_id"] in task_ids, r
+              assert r["answer"].strip(), f"empty answer for {r['task_id']}"
+
+          print(f"OK: {len(results)}/{len(tasks)} tasks answered, all non-empty")
+          PYEOF
+
+      - name: Upload results.json for a look
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: practice-results
+          path: ci_output/results.json
