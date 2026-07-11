@@ -200,7 +200,7 @@ st.subheader("Enter a query")
 chip_cols = st.columns(len(EXAMPLES))
 for col, ex in zip(chip_cols, EXAMPLES):
     label = ex if len(ex) <= 30 else ex[:30] + "…"
-    if col.button(label, key=f"ex_{ex}", use_container_width=True):
+    if col.button(label, key=f"ex_{ex}", width="stretch"):
         st.session_state.prompt = ex
         st.rerun()
 
@@ -294,7 +294,7 @@ if history:
     st.subheader("Query log")
     st.dataframe(
         df.rename(columns={"query": "Query", "backend": "Route", "ft": "Fine-tuned", "bl": "Baseline", "saved": "Saved"}),
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
     if st.button("Reset session"):

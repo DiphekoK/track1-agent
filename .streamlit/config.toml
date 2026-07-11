@@ -1,3 +1,12 @@
+[server]
+# Auto-rerun-on-file-change is a local-dev feature, pointless on a
+# deployed app - and transformers' lazy submodule loading (zoedepth
+# pulling in an optional torchvision dependency nobody asked for) trips
+# up the watcher's module scan when it's left on. Disabling it sidesteps
+# the whole class of import errors instead of installing torchvision
+# just to satisfy a scan nothing else needs.
+fileWatcherType = "none"
+
 [theme]
 base = "dark"
 primaryColor = "#7CE38B"
