@@ -1,0 +1,45 @@
+# Demo deployment image - runs web/server.py (a long-lived HTTP server
+# serving the pixel-perfect UI + real routing pipeline) instead of
+# agent.py's one-shot batch run. NOT the Track 1 submission image (see
+# Dockerfile for that) - this is purely so the demo can run somewhere
+# that executes arbitrary Docker images (Render, Railway, Fly.io...).
+# Streamlit Cloud can't run this - it only runs Streamlit-shaped apps,
+# which is exactly why this exists as a separate path.
+#
+# Same pip installs and model download as the submission Dockerfile,
+# already proven to work there - only the final COPY scope, CMD, and
+# exposed port differ.
+FROM python:3.11-slim-bookworm
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        curl \
+        ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir llama-cpp-python==0.3.30 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu \
+    && pip install --no-cache-dir torch==2.4.1 --index-url https://download.pytorch.org/whl/cpu
+
+RUN mkdir -p models && \
+    curl -L -o models/qwen2.5-1.5b-instruct-q4_k_m.gguf \
+        https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf
+
+COPY . .
+
+# Same graceful 404-tolerant fetch as the submission Dockerfile - falls
+# back to the heuristic router if this hasn't been published yet.
+RUN curl -fL -o router/model/model.safetensors \
+        https://github.com/DiphekoK/track1-agent/releases/download/router-weights/model.safetensors \
+    || echo "no published router weights yet, falling back to the heuristic router"
+
+ENV LOCAL_MODEL_PATH=/app/models/qwen2.5-1.5b-instruct-q4_k_m.gguf
+
+# FIREWORKS_API_KEY / FIREWORKS_BASE_URL / MODEL_EXPENSIVE come from
+# whatever the host platform's own secrets/env-var settings provide -
+# deliberately not baked in here.
+EXPOSE 8787
+CMD ["python", "web/server.py"]
