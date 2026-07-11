@@ -46,7 +46,7 @@ import categories
 import fireworks_client
 import baseline_router
 import agent
-from router.infer_router import available as router_available, predict as router_predict, unload as router_unload
+from router.infer_router import available as router_available, predict as router_predict
 
 st.set_page_config(page_title="Token-Efficient Query Router", page_icon="🧭", layout="wide")
 
@@ -267,10 +267,6 @@ if run_clicked:
     status1.success(f"**{ft['backend']}**{conf_str} · {latency_ms}ms · 0 tokens")
     if ft["note"]:
         col1.caption(ft["note"])
-
-    # Free the router's weights now that the decision's made - cheap
-    # insurance even without the local model in the picture anymore.
-    router_unload()
 
     status2.info("Calling classifier…")
     bl = run_baseline(q)
