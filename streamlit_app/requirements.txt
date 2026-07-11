@@ -1,0 +1,7 @@
+streamlit
+openai==1.59.6
+transformers==4.44.2
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.4.1
+--extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+llama-cpp-python==0.3.30
