@@ -6,6 +6,22 @@
 {"prompt": "A price starts at $200. It increases by 25%, then decreases by 10%. What is the final price?", "category": "math", "label": "local"}
 {"prompt": "One worker assembles 5 units per hour and works 6 hours. A second worker assembles 3 units per hour and works 9 hours. How many units did they assemble in total?", "category": "math", "label": "local"}
 {"prompt": "An item costs $150. It's discounted 10%, then an additional 5% off the already-discounted price. What is the final price?", "category": "math", "label": "local"}
+{"prompt": "A tank starts with 600 liters. It drains at 10 liters per minute for 12 minutes, then is refilled at 15 liters per minute for 10 minutes, then drains again at 6 liters per minute for 8 minutes. How many liters are in the tank now?", "category": "math", "label": "local"}
+{"prompt": "A store has 500 items. It sells 30% on Monday and 25 more on Tuesday. How many items remain?", "category": "math", "label": "fireworks"}
+{"prompt": "A pool starts empty. It's filled at 20 liters per minute for 15 minutes, then drained at 8 liters per minute for 6 minutes, then filled at 10 liters per minute for 5 minutes. How many liters are in the pool now?", "category": "math", "label": "local"}
+{"prompt": "A seller buys widgets for $12 each and sells them for $20 each. After selling 55 widgets and paying $80 in fixed expenses, what is the total profit?", "category": "math", "label": "local"}
+{"prompt": "What is the average of these numbers: 15, 22, 8, 30, 19, 11?", "category": "math", "label": "fireworks"}
+{"prompt": "A price starts at $350. It increases by 15%, then decreases by 20%. What is the final price?", "category": "math", "label": "fireworks"}
+{"prompt": "One worker assembles 4 units per hour and works 7 hours. A second worker assembles 6 units per hour and works 5 hours. How many units did they assemble in total?", "category": "math", "label": "local"}
+{"prompt": "An item costs $220. It's discounted 15%, then an additional 10% off the already-discounted price. What is the final price?", "category": "math", "label": "local"}
+{"prompt": "A tank starts with 750 liters. It drains at 12 liters per minute for 10 minutes, then is refilled at 18 liters per minute for 15 minutes, then drains again at 9 liters per minute for 12 minutes. How many liters are in the tank now?", "category": "math", "label": "fireworks"}
+{"prompt": "A store has 420 items. It sells 25% on Monday and 40 more on Tuesday. How many items remain?", "category": "math", "label": "fireworks"}
+{"prompt": "A pool starts empty. It's filled at 30 liters per minute for 10 minutes, then drained at 12 liters per minute for 8 minutes, then filled at 5 liters per minute for 20 minutes. How many liters are in the pool now?", "category": "math", "label": "fireworks"}
+{"prompt": "A seller buys widgets for $5 each and sells them for $9 each. After selling 80 widgets and paying $50 in fixed expenses, what is the total profit?", "category": "math", "label": "local"}
+{"prompt": "What is the average of these numbers: 4, 16, 9, 25, 6?", "category": "math", "label": "fireworks"}
+{"prompt": "A price starts at $500. It increases by 10%, then decreases by 15%. What is the final price?", "category": "math", "label": "local"}
+{"prompt": "One worker assembles 8 units per hour and works 4 hours. A second worker assembles 2 units per hour and works 12 hours. How many units did they assemble in total?", "category": "math", "label": "local"}
+{"prompt": "An item costs $80. It's discounted 20%, then an additional 5% off the already-discounted price. What is the final price?", "category": "math", "label": "local"}
 {"prompt": "Classify the sentiment of this review: The laptop stand exceeded expectations, works flawlessly every time.", "category": "sentiment", "label": "local"}
 {"prompt": "Classify the sentiment of this review: The blender broke after two days and support never replied.", "category": "sentiment", "label": "local"}
 {"prompt": "Classify the sentiment of this review: The wireless mouse does exactly what the description says, nothing more, nothing less.", "category": "sentiment", "label": "fireworks"}
@@ -14,37 +30,121 @@
 {"prompt": "Classify the sentiment of this review: The running shoes arrived on time and matches the listing.", "category": "sentiment", "label": "fireworks"}
 {"prompt": "Classify the sentiment of this review: I'm impressed by how well the desk lamp performs given the price.", "category": "sentiment", "label": "local"}
 {"prompt": "Classify the sentiment of this review: Regret buying this backpack, it's noisy and poorly built.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The keyboard is solid but a bit overpriced for what it offers.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: Absolutely love the water bottle, changed my daily routine for the better.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The power bank stopped charging after a week, very disappointing.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The phone case works as described, no surprises either way.", "category": "sentiment", "label": "fireworks"}
+{"prompt": "Classify the sentiment of this review: Fantastic build quality on this toolset, exceeded what I paid for.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The monitor arrived damaged and customer service was unhelpful.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: It's an average umbrella, gets the job done without any flair.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: This notebook is a game changer, I use it every single day now.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The sunglasses is cheaply made and fell apart within a month.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The desk mat matches the photos and specs listed exactly.", "category": "sentiment", "label": "fireworks"}
+{"prompt": "Classify the sentiment of this review: I'm thrilled with this space heater, it's better than the pricier alternatives.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: Terrible experience, the hair dryer overheated and shut off on its own.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The picnic blanket is fine for occasional use, nothing special.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: Couldn't be happier with the tool belt, it's exactly what I needed.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The webcam misses basic features I expected at this price.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The router performs consistently, no complaints so far.", "category": "sentiment", "label": "fireworks"}
 {"prompt": "Extract all named entities and their types from: Maria Sanchez joined Fireworks AI in Berlin last March.", "category": "ner", "label": "local"}
 {"prompt": "Extract all named entities and their types from: David Kim signed a partnership with Nordic Robotics in Oslo on July 14, 2025.", "category": "ner", "label": "local"}
 {"prompt": "Extract all named entities and their types from: Amara Okafor relocated to Nairobi to lead engineering at Vantage Health in January.", "category": "ner", "label": "local"}
-{"prompt": "Extract all named entities and their types from: Liam O'Connor presented the roadmap for Solstice Analytics in Dublin this September.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Liam O'Connor presented the roadmap for Solstice Analytics in Dublin this September.", "category": "ner", "label": "fireworks"}
 {"prompt": "Extract all named entities and their types from: Priya Nair started as CTO of Meridian Labs in Singapore in 2024.", "category": "ner", "label": "local"}
 {"prompt": "Extract all named entities and their types from: Carlos Mendes opened a new office for Bright Path Robotics in Lisbon last November.", "category": "ner", "label": "local"}
-{"prompt": "Summarize the following in exactly one sentence: The city council voted on Tuesday to approve a new bike lane network spanning twelve kilometres, with construction expected to begin in spring and finish before next year's transit summit.", "category": "summarization", "label": "fireworks"}
+{"prompt": "Extract all named entities and their types from: Elena Petrova launched a research lab for Quantum Bridge in Warsaw this April.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Jonas Berg joined Nordwind Systems as CFO in Stockholm in 2023.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Fatima Zahra opened a design studio for Sable and Co in Casablanca last June.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Ravi Deshmukh presented the quarterly report for Orion Freight in Mumbai this February.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Clara Jansen relocated to Toronto to head operations at Birchwood Systems in August.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Tomas Novak signed a licensing deal with Halcyon Robotics in Prague on May 9, 2024.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Grace Muthoni founded Savanna Analytics in Nairobi in 2022.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Marco Rinaldi joined Vertex Motors as lead engineer in Turin last October.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Aiko Tanaka presented the new roadmap for Sakura Robotics in Osaka this November.", "category": "ner", "label": "fireworks"}
+{"prompt": "Extract all named entities and their types from: Diego Fernandez opened a satellite office for Andes Cloud in Bogota in March.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Ingrid Solberg joined Fjord Energy as director in Bergen in 2021.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Samuel Okoye led the expansion of Delta Freight into Accra this July.", "category": "ner", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: The city council voted on Tuesday to approve a new bike lane network spanning twelve kilometres, with construction expected to begin in spring and finish before next year's transit summit.", "category": "summarization", "label": "local"}
 {"prompt": "Summarize the following in exactly one sentence: Researchers at the university published a study showing that the local bee population declined by eighteen percent over the past five years, largely due to habitat loss and pesticide use.", "category": "summarization", "label": "fireworks"}
 {"prompt": "Summarize the following in exactly one sentence: The airline announced it will add three new direct routes to South America starting next quarter, citing rising demand from business travellers.", "category": "summarization", "label": "local"}
 {"prompt": "Summarize the following in exactly one sentence: A local bakery chain is expanding into two neighbouring towns after securing a small business loan, with the first new location expected to open by the end of the year.", "category": "summarization", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: The transit authority confirmed that the downtown subway extension will open two months ahead of schedule, following faster-than-expected tunnel construction.", "category": "summarization", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: A regional hospital network announced a partnership with a telehealth startup to provide free virtual consultations to rural patients starting next spring.", "category": "summarization", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: The national park service reported that wolf reintroduction efforts have led to a marked recovery in local elk and vegetation populations over the past decade.", "category": "summarization", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: A mid-sized furniture manufacturer is shifting its entire production line to reclaimed wood, citing both cost savings and demand from environmentally conscious buyers.", "category": "summarization", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: City officials unveiled a plan to convert an abandoned rail line into a fifteen-kilometre pedestrian and cycling greenway, with the first section opening next summer.", "category": "summarization", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: Researchers found that a newly discovered species of deep-sea coral can survive water temperatures previously thought lethal to most reef-building organisms.", "category": "summarization", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: The school district approved funding for a free breakfast program in all elementary schools after a pilot showed improved attendance and test scores.", "category": "summarization", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: A logistics company is testing electric delivery bikes in three congested city centers, reporting a thirty percent drop in average delivery times so far.", "category": "summarization", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: The museum announced it will digitize its entire photo archive over the next three years, making over two hundred thousand historical images publicly searchable online.", "category": "summarization", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: A community farming cooperative doubled its harvest yield this year after switching to a crop rotation system recommended by a local agricultural extension office.", "category": "summarization", "label": "local"}
 {"prompt": "What is the capital of Australia, and what body of water is it near?", "category": "factual", "label": "fireworks"}
-{"prompt": "What is photosynthesis?", "category": "factual", "label": "local"}
+{"prompt": "What is photosynthesis?", "category": "factual", "label": "fireworks"}
 {"prompt": "What causes rainbows to form?", "category": "factual", "label": "local"}
 {"prompt": "What is the difference between TCP and UDP?", "category": "factual", "label": "local"}
 {"prompt": "Who developed the theory of general relativity, and in what year was it published?", "category": "factual", "label": "local"}
 {"prompt": "What is the boiling point of water at sea level in Celsius?", "category": "factual", "label": "local"}
+{"prompt": "What is the capital of Japan?", "category": "factual", "label": "local"}
+{"prompt": "What is the chemical symbol for gold?", "category": "factual", "label": "local"}
+{"prompt": "What planet is known as the Red Planet?", "category": "factual", "label": "local"}
+{"prompt": "Who wrote the play Romeo and Juliet?", "category": "factual", "label": "local"}
+{"prompt": "What is the largest ocean on Earth?", "category": "factual", "label": "local"}
+{"prompt": "What gas do plants primarily absorb during photosynthesis?", "category": "factual", "label": "local"}
+{"prompt": "What is the freezing point of water in Celsius?", "category": "factual", "label": "local"}
+{"prompt": "Who painted the Mona Lisa?", "category": "factual", "label": "local"}
+{"prompt": "What is the smallest prime number?", "category": "factual", "label": "local"}
+{"prompt": "What country is home to the Great Barrier Reef?", "category": "factual", "label": "local"}
+{"prompt": "What is the official currency of Japan called?", "category": "factual", "label": "local"}
+{"prompt": "What is the tallest mountain in the world?", "category": "factual", "label": "local"}
 {"prompt": "Three friends, Sam, Jo, and Lee, each own a different pet: cat, dog, bird. Sam does not own the bird. Jo owns the dog. Who owns the cat?", "category": "logic", "label": "local"}
 {"prompt": "Three friends, Ivy, Noah, and Mia, each drive a different colored car: red, blue, green. Ivy's car isn't red. Noah's car is green. Who drives the blue car?", "category": "logic", "label": "local"}
 {"prompt": "Four friends, Kai, Lena, Theo, and Ren, each drink a different beverage: tea, coffee, juice, water. Kai doesn't drink tea or water. Lena drinks coffee. Theo doesn't drink water. Who drinks water?", "category": "logic", "label": "local"}
 {"prompt": "Three musicians, Nora, Pablo, and Yuki, each play a different instrument: piano, violin, drums. Nora doesn't play drums. Pablo plays violin. Who plays the drums?", "category": "logic", "label": "local"}
 {"prompt": "Three friends, Grace, Hugo, and Elin, each pick a different fruit: mango, kiwi, fig. Grace didn't pick the fig. Hugo picked kiwi. Who picked the fig?", "category": "logic", "label": "fireworks"}
 {"prompt": "Four friends, Owen, Priya, Sana, and Tariq, each play a different sport: tennis, chess, rugby, golf. Owen doesn't play chess or golf. Priya plays rugby. Sana doesn't play golf. Who plays golf?", "category": "logic", "label": "local"}
+{"prompt": "Three friends, Zara, Finn, and Talia, each drink a different beverage: tea, soda, juice. Zara doesn't drink soda. Finn drinks juice. Who drinks tea?", "category": "logic", "label": "local"}
+{"prompt": "Three friends, Omar, Bea, and Nils, each play a different game: chess, checkers, dominoes. Omar doesn't play dominoes. Bea plays checkers. Who plays dominoes?", "category": "logic", "label": "local"}
+{"prompt": "Three friends, Petra, Junho, and Alexei, each prefer a different activity: hiking, swimming, cycling. Petra doesn't prefer cycling. Junho prefers swimming. Who prefers cycling?", "category": "logic", "label": "local"}
+{"prompt": "Three friends, Ines, Cormac, and Wren, each ordered a different dessert: cake, pie, tart. Ines didn't order the tart. Cormac ordered pie. Who ordered the tart?", "category": "logic", "label": "local"}
+{"prompt": "Three musicians, Soren, Amara, and Dax, each play a different instrument: guitar, drums, bass. Soren doesn't play bass. Amara plays drums. Who plays bass?", "category": "logic", "label": "local"}
+{"prompt": "Three friends, Yara, Bram, and Isla, each drive a different vehicle: sedan, truck, van. Yara doesn't drive the van. Bram drives the truck. Who drives the van?", "category": "logic", "label": "local"}
+{"prompt": "Three friends, Milo, Reza, and Ffion, each play a different sport: soccer, baseball, hockey. Milo doesn't play hockey. Reza plays baseball. Who plays hockey?", "category": "logic", "label": "local"}
+{"prompt": "Four friends, Petra, Doran, Liv, and Amos, each ordered a different dish: pasta, salad, soup, sandwich. Petra didn't order pasta or the sandwich. Doran ordered salad. Liv didn't order the sandwich. Who ordered the sandwich?", "category": "logic", "label": "fireworks"}
+{"prompt": "Four students, Enzo, Ruth, Kwame, and Sena, each study a different subject: math, science, art, music. Enzo doesn't study art or music. Ruth studies science. Kwame doesn't study music. Who studies music?", "category": "logic", "label": "fireworks"}
+{"prompt": "Four friends, Odette, Hassan, Ines, and Bo, each have a different favorite season: spring, summer, autumn, winter. Odette's favorite isn't summer or winter. Hassan's favorite is autumn. Ines's favorite isn't winter. Whose favorite season is winter?", "category": "logic", "label": "local"}
+{"prompt": "Four friends, Farah, Otis, Maren, and Cato, each have a different colored phone: blue, silver, black, white. Farah's phone isn't black or white. Otis's phone is silver. Maren's phone isn't white. Whose phone is white?", "category": "logic", "label": "fireworks"}
+{"prompt": "Four coworkers, Idris, Noelle, Petros, and Wyn, were each assigned a different region: north, south, east, west. Idris wasn't assigned east or west. Noelle was assigned south. Petros wasn't assigned west. Who was assigned west?", "category": "logic", "label": "local"}
+{"prompt": "Four coworkers, Beatrix, Njeri, Osman, and Tamsin, each work a different shift day: Monday, Tuesday, Wednesday, Thursday. Beatrix doesn't work Wednesday or Thursday. Njeri works Tuesday. Osman doesn't work Thursday. Who works Thursday?", "category": "logic", "label": "fireworks"}
+{"prompt": "Four friends, Quinn, Radu, Selin, and Toby, each prefer different footwear: hiking boots, sandals, sneakers, slippers. Quinn doesn't prefer sneakers or slippers. Radu prefers sandals. Selin doesn't prefer slippers. Who prefers slippers?", "category": "logic", "label": "fireworks"}
 {"prompt": "This function should return the max of a list but has a bug:\ndef get_max(nums): return nums[0]\nFind and fix it.", "category": "code_debug", "label": "fireworks"}
 {"prompt": "This function should sum all numbers from 1 to n inclusive but has a bug:\ndef sum_to_n(n):\n    total = 0\n    for i in range(1, n):\n        total += i\n    return total\nFind and fix it.", "category": "code_debug", "label": "fireworks"}
 {"prompt": "This function should append to a fresh list each call but has a bug:\ndef add_item(item, items=[]):\n    items.append(item)\n    return items\nFind and fix it so repeated calls don't share state.", "category": "code_debug", "label": "local"}
 {"prompt": "This function should check if a number is even but has a bug:\ndef is_even(n):\n    return n % 2 == 1\nFind and fix it.", "category": "code_debug", "label": "local"}
 {"prompt": "This function should reverse a string but has a bug:\ndef reverse_string(s):\n    return s\nFind and fix it.", "category": "code_debug", "label": "local"}
 {"prompt": "This function should compute n factorial but has a bug:\ndef factorial(n):\n    if n == 0:\n        return 0\n    return n * factorial(n - 1)\nFind and fix it.", "category": "code_debug", "label": "fireworks"}
+{"prompt": "This function should sum the even numbers in a list but has a bug:\ndef sum_evens(nums):\n    total = 0\n    for i in range(len(nums) - 1):\n        if nums[i] % 2 == 0:\n            total += nums[i]\n    return total\nFind and fix it.", "category": "code_debug", "label": "local"}
+{"prompt": "This function should return whether someone is an adult (18 or older) but has a bug:\ndef is_adult(age):\n    return age > 18\nFind and fix it.", "category": "code_debug", "label": "local"}
+{"prompt": "This function should return the smallest number in a list but has a bug:\ndef find_min(nums):\n    m = 0\n    for n in nums:\n        if n < m:\n            m = n\n    return m\nFind and fix it.", "category": "code_debug", "label": "local"}
+{"prompt": "This function should title-case every word in a string but has a bug:\ndef capitalize_words(s):\n    return s.lower()\nFind and fix it.", "category": "code_debug", "label": "local"}
+{"prompt": "This function should count how many times a value appears in a list but has a bug:\ndef count_occurrences(items, target):\n    count = 0\n    for item in items:\n        if item == target:\n            count = 1\n    return count\nFind and fix it.", "category": "code_debug", "label": "local"}
+{"prompt": "This function should sum the digits of a number but has a bug:\ndef digit_sum(n):\n    total = 0\n    n = abs(n)\n    while n > 0:\n        total += n % 10\n        n = n // 100\n    return total\nFind and fix it.", "category": "code_debug", "label": "local"}
+{"prompt": "This function should remove duplicates from a list while keeping first-occurrence order but has a bug:\ndef dedupe(items):\n    return list(set(items))\nFind and fix it.", "category": "code_debug", "label": "fireworks"}
+{"prompt": "This function should check if two strings are anagrams of each other, ignoring case, but has a bug:\ndef is_anagram(a, b):\n    return sorted(a) == sorted(b)\nFind and fix it.", "category": "code_debug", "label": "local"}
+{"prompt": "This function should return the running (cumulative) total before each number is added but has a bug:\ndef running_total(nums):\n    result = []\n    total = 0\n    for n in nums:\n        result.append(total)\n        total += n\n    return result\nIt should instead return the cumulative total after each number is added. Find and fix it.", "category": "code_debug", "label": "local"}
+{"prompt": "This function should return whether a list is sorted in ascending order but has a bug:\ndef is_sorted(nums):\n    for i in range(len(nums) - 1):\n        if nums[i] > nums[i + 1]:\n            return True\n    return False\nFind and fix it.", "category": "code_debug", "label": "local"}
 {"prompt": "Write a Python function called second_largest that returns the second-largest number in a list, handling duplicates correctly (e.g. [5, 5, 3] should return 3).", "category": "code_gen", "label": "local"}
 {"prompt": "Write a Python function called is_palindrome that returns True if a given string reads the same forwards and backwards, ignoring case, and False otherwise.", "category": "code_gen", "label": "local"}
 {"prompt": "Write a Python function called flatten that takes a nested list of arbitrary depth and returns a single flat list of all the values, in order.", "category": "code_gen", "label": "local"}
 {"prompt": "Write a Python function called count_vowels that returns the number of vowels (a, e, i, o, u, case-insensitive) in a given string.", "category": "code_gen", "label": "local"}
 {"prompt": "Write a Python function called nth_fibonacci that returns the n-th Fibonacci number (0-indexed, so nth_fibonacci(0) == 0 and nth_fibonacci(1) == 1).", "category": "code_gen", "label": "local"}
 {"prompt": "Write a Python function called is_prime that returns True if a given positive integer is prime, and False otherwise.", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called gcd that returns the greatest common divisor of two non-negative integers.", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called remove_duplicates that returns a list with duplicate values removed, keeping only the first occurrence of each value in its original order.", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called title_case that returns a copy of a string with the first letter of every word capitalized and the rest lowercase.", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called sum_of_digits that returns the sum of the digits of the absolute value of a given integer.", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called is_leap_year that returns True if a given year is a leap year (divisible by 4, except centuries which must be divisible by 400), and False otherwise.", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called reverse_words that takes a sentence and returns it with the order of its words reversed, keeping each word itself unchanged.", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called most_common_char that returns the character that appears most often in a string (you can assume there is always a single unique most-frequent character in the test inputs).", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called is_perfect_square that returns True if a given non-negative integer is a perfect square, and False otherwise.", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called rotate_list that rotates a list to the left by k positions (k may be larger than the list's length).", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called word_count that returns the number of words in a string, treating any run of whitespace as a separator.", "category": "code_gen", "label": "local"}
