@@ -37,10 +37,16 @@ RUN mkdir -p models && \
 
 COPY . .
 
-# router/model/ ships whatever's in the repo at build time - either the
-# trained classifier if train_router.py has been run, or just the .gitkeep,
-# in which case agent.py falls back to categories.py's heuristic on its own.
-# Nothing special needed here for either case.
+# router/model/'s config and tokenizer files come from the COPY above (small,
+# committed to git), but the ~255MB weights file itself is too big for a
+# normal git push (GitHub hard-rejects anything over 100MB) so it lives as a
+# GitHub Release asset instead, published by train-router.yml. Tolerates a
+# 404 here on purpose - if training hasn't been run yet there's no release
+# to fetch, and router/infer_router.py's available() check already handles
+# a missing weights file by falling back to categories.py's heuristic.
+RUN curl -fL -o router/model/model.safetensors \
+        https://github.com/DiphekoK/track1-agent/releases/download/router-weights/model.safetensors \
+    || echo "no published router weights yet, falling back to the heuristic router"
 
 ENV LOCAL_MODEL_PATH=/app/models/qwen2.5-1.5b-instruct-q4_k_m.gguf
 ENV INPUT_PATH=/input/tasks.json

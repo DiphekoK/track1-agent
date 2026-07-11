@@ -1,9 +1,14 @@
 # Runs the offline pipeline described in the README (generate adversarial
 # queries -> label them by actually running the local model -> fine-tune
-# the router on the result) and commits whatever comes out of it straight
-# back to main. Manual trigger only, not on every push - this takes a
-# while and touches the trained weights, not something that should happen
-# by accident on an unrelated commit.
+# the router on the result). Manual trigger only, not on every push - this
+# takes a while and touches the trained weights, not something that should
+# happen by accident on an unrelated commit.
+#
+# The small stuff (training data, config.json, tokenizer files) commits
+# straight to main. The weights file doesn't fit through a normal git push
+# (GitHub hard-rejects anything over 100MB, this one's ~255MB) so that part
+# goes to a GitHub Release asset instead - the Dockerfile curls it from
+# there at build time, same as it does for the gguf.
 #
 # Needs no Fireworks credentials, same as running these three scripts
 # locally - grading here is all programmatic, not an LLM judge.
@@ -48,14 +53,27 @@ jobs:
       - name: Train the router
         run: python router/train_router.py
 
-      - name: Commit trained weights back to main
+      - name: Commit everything except the weights file back to main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/queries.jsonl data/labeled_dataset.jsonl router/model
+          git reset router/model/model.safetensors
           if git diff --cached --quiet; then
             echo "nothing changed, skipping commit"
           else
             git commit -m "Retrain router on latest adversarial dataset"
             git push origin HEAD:main
+          fi
+
+      - name: Publish the weights file as a Release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view router-weights >/dev/null 2>&1; then
+            gh release upload router-weights router/model/model.safetensors --clobber
+          else
+            gh release create router-weights router/model/model.safetensors \
+              --title "Trained router weights" \
+              --notes "Auto-published by train-router.yml. Superseded on each retrain - see the commit history on main for the data that produced this one."
           fi

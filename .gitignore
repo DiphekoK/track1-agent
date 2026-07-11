@@ -4,9 +4,12 @@ __pycache__/
 models/*.gguf
 output/results.json
 
-# data/queries.jsonl, data/labeled_dataset.jsonl and router/model/ used to
-# live here too - reproducible from the scripts in theory, but the whole
-# point of committing them now is that the Dockerfile's COPY needs the
-# trained weights to actually be sitting in the repo, not regenerated on
-# every build (see .github/workflows/train-router.yml)
+# data/queries.jsonl, data/labeled_dataset.jsonl and router/model/'s small
+# config/tokenizer files are committed by train-router.yml so the Dockerfile
+# has something to COPY without needing to retrain. The weights file itself
+# is the one thing that doesn't fit here - GitHub hard-rejects any single
+# git file over 100MB and this one's ~255MB - so that goes to a GitHub
+# Release asset instead and the Dockerfile curls it at build time, same
+# as the gguf below.
+router/model/*.safetensors
 router/checkpoints/

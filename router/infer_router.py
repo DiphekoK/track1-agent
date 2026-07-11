@@ -21,7 +21,13 @@ _model = None
 
 
 def available():
-    return os.path.exists(os.path.join(_MODEL_DIR, "config.json"))
+    # config.json alone isn't enough - it's committed to git, but the
+    # weights file is a separate ~255MB download from a GitHub Release
+    # (too big for a normal git push) that might not have landed yet.
+    return (
+        os.path.exists(os.path.join(_MODEL_DIR, "config.json"))
+        and os.path.exists(os.path.join(_MODEL_DIR, "model.safetensors"))
+    )
 
 
 def _load():

@@ -14,6 +14,7 @@ the dataset grows and this gets slow.
 Run after label_dataset.py: python router/train_router.py
 """
 import json
+import random
 import sys
 from pathlib import Path
 
@@ -93,6 +94,15 @@ def main():
 
     device = pick_device()
     print(f"training on {device}")
+
+    # labeled_dataset.jsonl comes out grouped by category (all the math
+    # queries, then all the sentiment ones, etc.) - slicing it 80/20 in
+    # that order means the test split ends up being whichever categories
+    # happen to fall at the end, not a representative sample. Shuffle
+    # first (fixed seed so runs are comparable) so both splits actually
+    # look like the whole dataset.
+    records = records.copy()
+    random.Random(42).shuffle(records)
 
     split = int(len(records) * 0.8)
     train_records, test_records = records[:split], records[split:]

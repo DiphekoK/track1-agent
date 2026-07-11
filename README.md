@@ -145,8 +145,10 @@ docker run --rm \
 
 Check `output/results.json` on the host afterwards, same as the local run.
 
-One thing worth knowing: `router/model/` only ships whatever's in the repo
-when the image gets built. If you haven't run the training pipeline (see
-above) before building, the container will fall back to the heuristic
-router same as it would locally - not a bug, just means the build happened
-before training did.
+One thing worth knowing: `router/model/`'s config and tokenizer files come
+from the repo, but the weights file itself is a separate curl from a GitHub
+Release at build time (too big for a normal git push - see
+`train-router.yml`). If training hasn't been run yet, or the container's
+built before that release exists, the curl fails on purpose and the
+container falls back to the heuristic router same as it would locally -
+not a bug, just means the build happened before training did.
