@@ -35,7 +35,7 @@ def _get_llm():
     return _llm
 
 
-def answer(prompt: str, category: str) -> str:
+def _generate(prompt: str, category: str):
     llm = _get_llm()
     system = SYSTEM_PROMPTS.get(category, SYSTEM_PROMPTS["factual"])
 
@@ -47,4 +47,19 @@ def answer(prompt: str, category: str) -> str:
         temperature=0.2,
         max_tokens=300,
     )
-    return out["choices"][0]["message"]["content"].strip()
+    text = out["choices"][0]["message"]["content"].strip()
+    # llama-cpp-python mirrors the OpenAI response shape, usage included -
+    # real token count instead of estimating, same as fireworks_client.chat
+    total_tokens = out.get("usage", {}).get("total_tokens")
+    return text, total_tokens
+
+
+def answer(prompt: str, category: str) -> str:
+    text, _ = _generate(prompt, category)
+    return text
+
+
+def answer_with_usage(prompt: str, category: str):
+    """Same as answer(), but also returns the real token count (used by
+    web/server.py's demo, which needs it for the tokens-per-query chart)."""
+    return _generate(prompt, category)

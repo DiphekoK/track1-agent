@@ -22,7 +22,15 @@ Query: {prompt}"""
 def _classify_model():
     if os.environ.get("MODEL_CLASSIFY"):
         return os.environ["MODEL_CLASSIFY"].strip()
-    return os.environ["ALLOWED_MODELS"].split(",")[0].strip()
+    if os.environ.get("ALLOWED_MODELS"):
+        return os.environ["ALLOWED_MODELS"].split(",")[0].strip()
+    # ALLOWED_MODELS is only ever set by the harness - local runs of
+    # ROUTER_MODE=baseline (or anything else calling classify() directly,
+    # like web/server.py's demo) would otherwise hard-fail with a bare
+    # KeyError. Reusing the escalation model is a reasonable default
+    # rather than requiring a second model just to classify with.
+    import agent
+    return agent.get_fireworks_model()
 
 
 def classify(prompt):
