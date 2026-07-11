@@ -30,6 +30,17 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+# Streamlit secrets live in st.secrets, not os.environ - agent.py /
+# fireworks_client.py / baseline_router.py all read via os.environ
+# directly (same code the Docker image and CI use), so without this
+# bridge, secrets set correctly in the app's Settings > Secrets UI are
+# still invisible to them.
+try:
+    for _key in st.secrets:
+        os.environ.setdefault(_key, str(st.secrets[_key]))
+except Exception:
+    pass  # no secrets.toml locally - fine, .env / real env vars cover that case
+
 MODEL_URL = "https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf"
 os.environ.setdefault("LOCAL_MODEL_PATH", str(ROOT / "models" / "qwen2.5-1.5b-instruct-q4_k_m.gguf"))
 
