@@ -15,6 +15,18 @@ MODEL_PATH = os.environ.get("LOCAL_MODEL_PATH", "/app/models/qwen2.5-1.5b-instru
 
 _llm = None
 
+
+def _thread_count():
+    override = os.environ.get("LOCAL_LLM_THREADS")
+    if override:
+        return int(override)
+    # os.cpu_count() can misreport on constrained/virtualized runners (CI
+    # containers especially) - an oversubscribed llama.cpp tends to crawl
+    # rather than error out, which just looks like a hang from the
+    # outside. Capping it is cheap insurance; CI runners are 2-4 cores
+    # anyway so this isn't leaving real performance on the table there.
+    return min(os.cpu_count() or 2, 4)
+
 SYSTEM_PROMPTS = {
     "factual": "You are a helpful, accurate assistant. Answer clearly and concisely. If the question has multiple parts, answer all of them.",
     "sentiment": "You classify sentiment. Reply with the label (positive, negative, or neutral) followed by a one-sentence justification.",
@@ -29,7 +41,7 @@ def _get_llm():
         _llm = Llama(
             model_path=MODEL_PATH,
             n_ctx=2048,
-            n_threads=os.cpu_count() or 2,
+            n_threads=_thread_count(),
             verbose=False,
         )
     return _llm
