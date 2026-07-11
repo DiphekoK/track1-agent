@@ -1,0 +1,50 @@
+{"prompt": "A tank starts with 480 liters. It drains at 8 liters per minute for 15 minutes, then is refilled at 12 liters per minute for 20 minutes, then drains again at 5 liters per minute for 10 minutes. How many liters are in the tank now?", "category": "math", "label": "local"}
+{"prompt": "A store has 350 items. It sells 20% on Monday and 45 more on Tuesday. How many items remain?", "category": "math", "label": "local"}
+{"prompt": "A pool starts empty. It's filled at 25 liters per minute for 12 minutes, then drained at 10 liters per minute for 5 minutes, then filled at 15 liters per minute for 8 minutes. How many liters are in the pool now?", "category": "math", "label": "local"}
+{"prompt": "A seller buys widgets for $8 each and sells them for $15 each. After selling 42 widgets and paying $60 in fixed expenses, what is the total profit?", "category": "math", "label": "local"}
+{"prompt": "What is the average of these numbers: 12, 18, 9, 25, 31, 7?", "category": "math", "label": "fireworks"}
+{"prompt": "A price starts at $200. It increases by 25%, then decreases by 10%. What is the final price?", "category": "math", "label": "local"}
+{"prompt": "One worker assembles 5 units per hour and works 6 hours. A second worker assembles 3 units per hour and works 9 hours. How many units did they assemble in total?", "category": "math", "label": "local"}
+{"prompt": "An item costs $150. It's discounted 10%, then an additional 5% off the already-discounted price. What is the final price?", "category": "math", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The laptop stand exceeded expectations, works flawlessly every time.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The blender broke after two days and support never replied.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The wireless mouse does exactly what the description says, nothing more, nothing less.", "category": "sentiment", "label": "fireworks"}
+{"prompt": "Classify the sentiment of this review: Best office chair I've bought this year, worth every cent.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: Complete waste of money, the coffee maker stopped working within a week.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: The running shoes arrived on time and matches the listing.", "category": "sentiment", "label": "fireworks"}
+{"prompt": "Classify the sentiment of this review: I'm impressed by how well the desk lamp performs given the price.", "category": "sentiment", "label": "local"}
+{"prompt": "Classify the sentiment of this review: Regret buying this backpack, it's noisy and poorly built.", "category": "sentiment", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Maria Sanchez joined Fireworks AI in Berlin last March.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: David Kim signed a partnership with Nordic Robotics in Oslo on July 14, 2025.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Amara Okafor relocated to Nairobi to lead engineering at Vantage Health in January.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Liam O'Connor presented the roadmap for Solstice Analytics in Dublin this September.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Priya Nair started as CTO of Meridian Labs in Singapore in 2024.", "category": "ner", "label": "local"}
+{"prompt": "Extract all named entities and their types from: Carlos Mendes opened a new office for Bright Path Robotics in Lisbon last November.", "category": "ner", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: The city council voted on Tuesday to approve a new bike lane network spanning twelve kilometres, with construction expected to begin in spring and finish before next year's transit summit.", "category": "summarization", "label": "fireworks"}
+{"prompt": "Summarize the following in exactly one sentence: Researchers at the university published a study showing that the local bee population declined by eighteen percent over the past five years, largely due to habitat loss and pesticide use.", "category": "summarization", "label": "fireworks"}
+{"prompt": "Summarize the following in exactly one sentence: The airline announced it will add three new direct routes to South America starting next quarter, citing rising demand from business travellers.", "category": "summarization", "label": "local"}
+{"prompt": "Summarize the following in exactly one sentence: A local bakery chain is expanding into two neighbouring towns after securing a small business loan, with the first new location expected to open by the end of the year.", "category": "summarization", "label": "local"}
+{"prompt": "What is the capital of Australia, and what body of water is it near?", "category": "factual", "label": "fireworks"}
+{"prompt": "What is photosynthesis?", "category": "factual", "label": "local"}
+{"prompt": "What causes rainbows to form?", "category": "factual", "label": "local"}
+{"prompt": "What is the difference between TCP and UDP?", "category": "factual", "label": "local"}
+{"prompt": "Who developed the theory of general relativity, and in what year was it published?", "category": "factual", "label": "local"}
+{"prompt": "What is the boiling point of water at sea level in Celsius?", "category": "factual", "label": "local"}
+{"prompt": "Three friends, Sam, Jo, and Lee, each own a different pet: cat, dog, bird. Sam does not own the bird. Jo owns the dog. Who owns the cat?", "category": "logic", "label": "local"}
+{"prompt": "Three friends, Ivy, Noah, and Mia, each drive a different colored car: red, blue, green. Ivy's car isn't red. Noah's car is green. Who drives the blue car?", "category": "logic", "label": "local"}
+{"prompt": "Four friends, Kai, Lena, Theo, and Ren, each drink a different beverage: tea, coffee, juice, water. Kai doesn't drink tea or water. Lena drinks coffee. Theo doesn't drink water. Who drinks water?", "category": "logic", "label": "local"}
+{"prompt": "Three musicians, Nora, Pablo, and Yuki, each play a different instrument: piano, violin, drums. Nora doesn't play drums. Pablo plays violin. Who plays the drums?", "category": "logic", "label": "local"}
+{"prompt": "Three friends, Grace, Hugo, and Elin, each pick a different fruit: mango, kiwi, fig. Grace didn't pick the fig. Hugo picked kiwi. Who picked the fig?", "category": "logic", "label": "fireworks"}
+{"prompt": "Four friends, Owen, Priya, Sana, and Tariq, each play a different sport: tennis, chess, rugby, golf. Owen doesn't play chess or golf. Priya plays rugby. Sana doesn't play golf. Who plays golf?", "category": "logic", "label": "local"}
+{"prompt": "This function should return the max of a list but has a bug:\ndef get_max(nums): return nums[0]\nFind and fix it.", "category": "code_debug", "label": "fireworks"}
+{"prompt": "This function should sum all numbers from 1 to n inclusive but has a bug:\ndef sum_to_n(n):\n    total = 0\n    for i in range(1, n):\n        total += i\n    return total\nFind and fix it.", "category": "code_debug", "label": "fireworks"}
+{"prompt": "This function should append to a fresh list each call but has a bug:\ndef add_item(item, items=[]):\n    items.append(item)\n    return items\nFind and fix it so repeated calls don't share state.", "category": "code_debug", "label": "local"}
+{"prompt": "This function should check if a number is even but has a bug:\ndef is_even(n):\n    return n % 2 == 1\nFind and fix it.", "category": "code_debug", "label": "local"}
+{"prompt": "This function should reverse a string but has a bug:\ndef reverse_string(s):\n    return s\nFind and fix it.", "category": "code_debug", "label": "local"}
+{"prompt": "This function should compute n factorial but has a bug:\ndef factorial(n):\n    if n == 0:\n        return 0\n    return n * factorial(n - 1)\nFind and fix it.", "category": "code_debug", "label": "fireworks"}
+{"prompt": "Write a Python function called second_largest that returns the second-largest number in a list, handling duplicates correctly (e.g. [5, 5, 3] should return 3).", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called is_palindrome that returns True if a given string reads the same forwards and backwards, ignoring case, and False otherwise.", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called flatten that takes a nested list of arbitrary depth and returns a single flat list of all the values, in order.", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called count_vowels that returns the number of vowels (a, e, i, o, u, case-insensitive) in a given string.", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called nth_fibonacci that returns the n-th Fibonacci number (0-indexed, so nth_fibonacci(0) == 0 and nth_fibonacci(1) == 1).", "category": "code_gen", "label": "local"}
+{"prompt": "Write a Python function called is_prime that returns True if a given positive integer is prime, and False otherwise.", "category": "code_gen", "label": "local"}
