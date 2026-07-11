@@ -45,10 +45,23 @@ except Exception:
 import categories
 import fireworks_client
 import baseline_router
-import agent
 from router.infer_router import available as router_available, predict as router_predict
 
 st.set_page_config(page_title="Token-Efficient Query Router", page_icon="🧭", layout="wide")
+
+# Deliberately not `import agent` - agent.py unconditionally imports
+# local_llm at its own top level, which needs llama_cpp, which this
+# deployment doesn't install (see the module docstring). These two are
+# the only things this app actually needs from it, so they're
+# duplicated here rather than pulling in that whole import chain just
+# to get them.
+ROUTER_CONFIDENCE_THRESHOLD = float(os.environ.get("ROUTER_CONFIDENCE_THRESHOLD", "0.65"))
+
+
+def get_fireworks_model():
+    if os.environ.get("MODEL_EXPENSIVE"):
+        return os.environ["MODEL_EXPENSIVE"].strip()
+    return os.environ["ALLOWED_MODELS"].split(",")[0].strip()
 
 EXAMPLES = [
     "What is 47 + 128?",
@@ -102,7 +115,7 @@ def get_config():
         cheap_label = None
         cheap_error = f"missing env var {e}"
     try:
-        fireworks_label = agent.get_fireworks_model().rsplit("/", 1)[-1]
+        fireworks_label = get_fireworks_model().rsplit("/", 1)[-1]
         fireworks_error = None
     except KeyError as e:
         fireworks_label = None
@@ -120,7 +133,7 @@ def decide_finetuned(prompt, category):
     confidence, note = None, None
     if router_available():
         label, confidence = router_predict(prompt)
-        if confidence < agent.ROUTER_CONFIDENCE_THRESHOLD:
+        if confidence < ROUTER_CONFIDENCE_THRESHOLD:
             note = f"router unsure ({confidence:.2f}), used heuristic instead"
             label = "local" if categories.should_use_local(category) else "fireworks"
     else:
@@ -140,7 +153,7 @@ def run_baseline(prompt):
 def run_answer(prompt, category, backend):
     try:
         system = fireworks_client.SYSTEM_PROMPTS.get(category)
-        model = get_cheap_model() if backend == "local" else agent.get_fireworks_model()
+        model = get_cheap_model() if backend == "local" else get_fireworks_model()
         resp = fireworks_client.chat(model, prompt, system=system, max_tokens=400)
         text, tokens = resp["text"], resp["total_tokens"]
         return {"backend": backend, "text": text, "tokens": tokens, "error": None}

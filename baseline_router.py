@@ -22,15 +22,20 @@ Query: {prompt}"""
 def _classify_model():
     if os.environ.get("MODEL_CLASSIFY"):
         return os.environ["MODEL_CLASSIFY"].strip()
-    if os.environ.get("ALLOWED_MODELS"):
-        return os.environ["ALLOWED_MODELS"].split(",")[0].strip()
     # ALLOWED_MODELS is only ever set by the harness - local runs of
     # ROUTER_MODE=baseline (or anything else calling classify() directly,
-    # like web/server.py's demo) would otherwise hard-fail with a bare
-    # KeyError. Reusing the escalation model is a reasonable default
-    # rather than requiring a second model just to classify with.
-    import agent
-    return agent.get_fireworks_model()
+    # like the Streamlit demo) would otherwise hard-fail with a bare
+    # KeyError without this fallback. Reusing the escalation model is a
+    # reasonable default rather than requiring a second model just to
+    # classify with.
+    #
+    # This is the same lookup agent.get_fireworks_model() does, duplicated
+    # rather than imported - agent.py unconditionally imports local_llm at
+    # its own top level, which needs llama_cpp, and not every caller of
+    # this module has (or wants) that installed.
+    if os.environ.get("MODEL_EXPENSIVE"):
+        return os.environ["MODEL_EXPENSIVE"].strip()
+    return os.environ["ALLOWED_MODELS"].split(",")[0].strip()
 
 
 def classify(prompt):
