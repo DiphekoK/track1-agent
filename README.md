@@ -73,6 +73,14 @@ than just eating the token cost - worth a look before training on it.
 `train_router.py` will complain and exit if there's fewer than 10 labeled
 records - that just means generate/label didn't run first.
 
+Don't want to run this locally (it needs the gguf, torch, and transformers,
+which is a lot to pull down just to train a small classifier)? The "train
+router" GitHub Actions workflow runs all three scripts and commits
+`data/queries.jsonl`, `data/labeled_dataset.jsonl`, and `router/model/`
+straight back to main - trigger it manually from the Actions tab
+(workflow_dispatch, not on every push, since retraining isn't something
+that should happen by accident on an unrelated commit).
+
 ## Run it
 
 Set up real credentials:

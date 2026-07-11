@@ -1,0 +1,61 @@
+# Runs the offline pipeline described in the README (generate adversarial
+# queries -> label them by actually running the local model -> fine-tune
+# the router on the result) and commits whatever comes out of it straight
+# back to main. Manual trigger only, not on every push - this takes a
+# while and touches the trained weights, not something that should happen
+# by accident on an unrelated commit.
+#
+# Needs no Fireworks credentials, same as running these three scripts
+# locally - grading here is all programmatic, not an LLM judge.
+name: train router
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          pip install -r requirements.txt
+          pip install llama-cpp-python==0.3.30 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+          pip install torch==2.4.1 --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Download the local model
+        run: |
+          mkdir -p models
+          curl -L -o models/qwen2.5-1.5b-instruct-q4_k_m.gguf \
+            https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf
+
+      - name: Generate adversarial queries
+        run: python data/generate_adversarial.py
+
+      - name: Label dataset against the local model
+        env:
+          LOCAL_MODEL_PATH: ${{ github.workspace }}/models/qwen2.5-1.5b-instruct-q4_k_m.gguf
+        run: python data/label_dataset.py
+
+      - name: Train the router
+        run: python router/train_router.py
+
+      - name: Commit trained weights back to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/queries.jsonl data/labeled_dataset.jsonl router/model
+          if git diff --cached --quiet; then
+            echo "nothing changed, skipping commit"
+          else
+            git commit -m "Retrain router on latest adversarial dataset"
+            git push origin HEAD:main
+          fi
