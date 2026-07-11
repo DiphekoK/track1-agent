@@ -1,0 +1,50 @@
+"""
+Thin wrapper around llama-cpp-python so the rest of the code doesn't
+need to know about model paths, ctx sizes etc.
+
+Model is loaded once and reused for every task (loading it per-task
+would be way too slow). Kept small (1.5B, Q4_K_M) on purpose so it
+stays inside the 4GB RAM grading box with room left for the container
+itself and the Python process.
+"""
+import os
+
+from llama_cpp import Llama
+
+MODEL_PATH = os.environ.get("LOCAL_MODEL_PATH", "/app/models/qwen2.5-1.5b-instruct-q4_k_m.gguf")
+
+_llm = None
+
+SYSTEM_PROMPTS = {
+    "factual": "You are a helpful, accurate assistant. Answer clearly and concisely. If the question has multiple parts, answer all of them.",
+    "sentiment": "You classify sentiment. Reply with the label (positive, negative, or neutral) followed by a one-sentence justification.",
+    "summarization": "You summarize text exactly as instructed (length/format constraints in the prompt must be followed precisely).",
+    "ner": "You extract named entities from text. List each entity with its type (PERSON, ORG, LOCATION, DATE, etc).",
+}
+
+
+def _get_llm():
+    global _llm
+    if _llm is None:
+        _llm = Llama(
+            model_path=MODEL_PATH,
+            n_ctx=2048,
+            n_threads=os.cpu_count() or 2,
+            verbose=False,
+        )
+    return _llm
+
+
+def answer(prompt: str, category: str) -> str:
+    llm = _get_llm()
+    system = SYSTEM_PROMPTS.get(category, SYSTEM_PROMPTS["factual"])
+
+    out = llm.create_chat_completion(
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.2,
+        max_tokens=300,
+    )
+    return out["choices"][0]["message"]["content"].strip()
