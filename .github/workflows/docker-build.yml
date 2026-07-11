@@ -18,12 +18,14 @@ on:
       - .dockerignore
       - requirements.txt
       - "**.py"
+      - .github/workflows/docker-build.yml
   pull_request:
     paths:
       - Dockerfile
       - .dockerignore
       - requirements.txt
       - "**.py"
+      - .github/workflows/docker-build.yml
   workflow_dispatch:
 
 jobs:
