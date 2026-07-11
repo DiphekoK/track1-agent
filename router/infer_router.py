@@ -40,9 +40,15 @@ def _load():
 
 
 def predict(prompt):
+    """Returns (label, confidence). Confidence is the softmax probability
+    of the predicted class - agent.py uses it to decide whether to trust
+    this or fall back to the heuristic, since a classifier trained on a
+    few hundred examples is going to have plenty of near-50/50 calls that
+    are safer left to the hand-picked category rules."""
     _load()
     inputs = _tokenizer(prompt, return_tensors="pt", truncation=True, max_length=256)
     with torch.no_grad():
         logits = _model(**inputs).logits
-    idx = int(torch.argmax(logits, dim=1)[0])
-    return _LABELS[idx]
+    probs = torch.softmax(logits, dim=1)[0]
+    idx = int(torch.argmax(probs))
+    return _LABELS[idx], float(probs[idx])

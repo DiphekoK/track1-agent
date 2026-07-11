@@ -59,7 +59,7 @@ export LOCAL_MODEL_PATH="$(pwd)/models/qwen2.5-1.5b-instruct-q4_k_m.gguf"   # Wi
 
 ```
 python data/generate_adversarial.py   # writes data/queries.jsonl, verifies logic puzzles + math while doing it
-python data/label_dataset.py          # runs the local model against every query, writes data/labeled_dataset.jsonl
+python data/label_dataset.py          # runs the local model against every query 5x each, writes data/labeled_dataset.jsonl
 python router/train_router.py         # fine-tunes DistilBERT, saves to router/model/
 ```
 
@@ -69,6 +69,15 @@ match for logic), not an LLM judge. Watch `label_dataset.py`'s output: if a
 whole category comes back 100% "fireworks", the local model is failing it
 consistently and might need a better system prompt in `local_llm.py` rather
 than just eating the token cost - worth a look before training on it.
+
+`label_dataset.py` samples each query `N_SAMPLES` (5) times and majority-
+votes the label, rather than one shot. `local_llm.answer()` runs at
+temperature 0.2, not 0, so a single pass/fail is noisier than it looks -
+re-running the same 150 queries has previously produced different label
+counts each time. This takes ~5x longer than one pass per query but the
+label is closer to "can the local model reliably handle this" instead of
+"did it get lucky just now", which matters a lot since that's exactly what
+the router is trained to predict.
 
 `train_router.py` will complain and exit if there's fewer than 10 labeled
 records - that just means generate/label didn't run first.
@@ -109,7 +118,12 @@ Sanity checks worth doing before submitting:
 
 ## ROUTER_MODE
 
-- `finetuned` (default) - trained classifier, zero-cost routing decision
+- `finetuned` (default) - trained classifier, zero-cost routing decision.
+  If its confidence on a given prompt is below `ROUTER_CONFIDENCE_THRESHOLD`
+  (default `0.65`), it defers to the `heuristic` rule below instead of
+  trusting what's effectively a coin flip - a classifier trained on a few
+  hundred examples has plenty of near-50/50 calls, and the hand-picked
+  category rules are a safer default than guessing on those.
 - `baseline` - asks a Fireworks model to classify first (costs tokens on
   every task just for the routing decision, not just the ones that get
   escalated - kept around to demonstrate why the finetuned router is worth

@@ -35,6 +35,12 @@ MAX_RUNTIME_SECONDS = 8.5 * 60
 
 ROUTER_MODE = os.environ.get("ROUTER_MODE", "finetuned")
 
+# Below this confidence, trust the hand-picked category rules over the
+# trained classifier instead of its raw argmax. It's trained on a few
+# hundred examples, so plenty of its calls are close to a coin flip -
+# better to defer to categories.py on those than to guess.
+ROUTER_CONFIDENCE_THRESHOLD = float(os.environ.get("ROUTER_CONFIDENCE_THRESHOLD", "0.65"))
+
 
 def get_fireworks_model():
     # MODEL_EXPENSIVE lets you point at a specific model during your own
@@ -53,8 +59,13 @@ def decide_backend(prompt, category):
     if ROUTER_MODE == "finetuned":
         from router.infer_router import available, predict
         if available():
-            return predict(prompt)
-        print("[warn] finetuned router weights not found, falling back to heuristic categories", file=sys.stderr)
+            label, confidence = predict(prompt)
+            if confidence >= ROUTER_CONFIDENCE_THRESHOLD:
+                return label
+            print(f"[warn] finetuned router unsure (confidence {confidence:.2f}) for this prompt, "
+                  f"falling back to heuristic categories", file=sys.stderr)
+        else:
+            print("[warn] finetuned router weights not found, falling back to heuristic categories", file=sys.stderr)
 
     return "local" if categories.should_use_local(category) else "fireworks"
 

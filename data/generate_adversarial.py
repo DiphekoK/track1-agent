@@ -186,6 +186,96 @@ _q("math",
    "the already-discounted price. What is the final price?",
    str(80 * 0.8 * 0.95), "numeric")
 
+_q("math",
+   "A tank starts with 900 liters. It drains at 15 liters per minute for "
+   "10 minutes, then is refilled at 20 liters per minute for 12 minutes, "
+   "then drains again at 10 liters per minute for 6 minutes. How many "
+   "liters are in the tank now?",
+   str(900 - 15 * 10 + 20 * 12 - 10 * 6), "numeric")
+
+_q("math",
+   "A store has 600 items. It sells 35% on Monday and 50 more on Tuesday. "
+   "How many items remain?",
+   str(600 - round(600 * 0.35) - 50), "numeric")
+
+_q("math",
+   "A pool starts empty. It's filled at 18 liters per minute for 20 "
+   "minutes, then drained at 9 liters per minute for 10 minutes, then "
+   "filled at 6 liters per minute for 15 minutes. How many liters are in "
+   "the pool now?",
+   str(18 * 20 - 9 * 10 + 6 * 15), "numeric")
+
+_q("math",
+   "A seller buys widgets for $7 each and sells them for $13 each. After "
+   "selling 65 widgets and paying $70 in fixed expenses, what is the "
+   "total profit?",
+   str((13 - 7) * 65 - 70), "numeric")
+
+_q("math",
+   "What is the average of these numbers: 20, 35, 12, 8, 45?",
+   str(sum([20, 35, 12, 8, 45]) / 5), "numeric")
+
+_q("math",
+   "A price starts at $280. It increases by 20%, then decreases by 25%. "
+   "What is the final price?",
+   str(280 * 1.20 * 0.75), "numeric")
+
+_q("math",
+   "One worker assembles 6 units per hour and works 8 hours. A second "
+   "worker assembles 4 units per hour and works 10 hours. How many units "
+   "did they assemble in total?",
+   str(6 * 8 + 4 * 10), "numeric")
+
+_q("math",
+   "An item costs $95. It's discounted 25%, then an additional 8% off "
+   "the already-discounted price. What is the final price?",
+   str(95 * 0.75 * 0.92), "numeric")
+
+_q("math",
+   "A tank starts with 1000 liters. It drains at 20 liters per minute "
+   "for 8 minutes, then is refilled at 25 liters per minute for 6 "
+   "minutes, then drains again at 15 liters per minute for 5 minutes. "
+   "How many liters are in the tank now?",
+   str(1000 - 20 * 8 + 25 * 6 - 15 * 5), "numeric")
+
+_q("math",
+   "A store has 800 items. It sells 40% on Monday and 70 more on "
+   "Tuesday. How many items remain?",
+   str(800 - round(800 * 0.40) - 70), "numeric")
+
+_q("math",
+   "A pool starts empty. It's filled at 12 liters per minute for 25 "
+   "minutes, then drained at 7 liters per minute for 12 minutes, then "
+   "filled at 9 liters per minute for 10 minutes. How many liters are in "
+   "the pool now?",
+   str(12 * 25 - 7 * 12 + 9 * 10), "numeric")
+
+_q("math",
+   "A seller buys widgets for $3 each and sells them for $6 each. After "
+   "selling 120 widgets and paying $40 in fixed expenses, what is the "
+   "total profit?",
+   str((6 - 3) * 120 - 40), "numeric")
+
+_q("math",
+   "What is the average of these numbers: 50, 42, 38, 60, 30, 44?",
+   str(sum([50, 42, 38, 60, 30, 44]) / 6), "numeric")
+
+_q("math",
+   "A price starts at $650. It increases by 8%, then decreases by 12%. "
+   "What is the final price?",
+   str(650 * 1.08 * 0.88), "numeric")
+
+_q("math",
+   "One worker assembles 10 units per hour and works 3 hours. A second "
+   "worker assembles 7 units per hour and works 6 hours. How many units "
+   "did they assemble in total?",
+   str(10 * 3 + 7 * 6), "numeric")
+
+_q("math",
+   "An item costs $130. It's discounted 30%, then an additional 10% off "
+   "the already-discounted price. What is the final price?",
+   str(130 * 0.7 * 0.9), "numeric")
+
 # ------------------------------------------------------------- sentiment
 
 for template, product, label in [
@@ -563,6 +653,161 @@ _q("logic",
    "prefer slippers. Who prefers slippers?",
    [n for n, v in _v.items() if v == "slippers"][0], "exact")
 
+_w = _solve_unique(
+    ["Amina", "Luca", "Soraya"], ["bread", "rice", "pasta"],
+    [lambda a: a["Amina"] != "pasta", lambda a: a["Luca"] == "rice"],
+)
+_q("logic",
+   "Three friends, Amina, Luca, and Soraya, each ate a different staple "
+   "food: bread, rice, pasta. Amina didn't eat pasta. Luca ate rice. Who "
+   "ate pasta?",
+   [n for n, v in _w.items() if v == "pasta"][0], "exact")
+
+_x = _solve_unique(
+    ["Denis", "Priya", "Oskar"], ["novel", "comic", "magazine"],
+    [lambda a: a["Denis"] != "magazine", lambda a: a["Priya"] == "comic"],
+)
+_q("logic",
+   "Three friends, Denis, Priya, and Oskar, each are reading a different "
+   "kind of publication: novel, comic, magazine. Denis isn't reading the "
+   "magazine. Priya is reading a comic. Who is reading the magazine?",
+   [n for n, v in _x.items() if v == "magazine"][0], "exact")
+
+_y = _solve_unique(
+    ["Mireille", "Kenji", "Abel"], ["painting", "sketching", "sculpture"],
+    [lambda a: a["Mireille"] != "sculpture", lambda a: a["Kenji"] == "sketching"],
+)
+_q("logic",
+   "Three artists, Mireille, Kenji, and Abel, each work in a different "
+   "medium: painting, sketching, sculpture. Mireille doesn't work in "
+   "sculpture. Kenji works in sketching. Who works in sculpture?",
+   [n for n, v in _y.items() if v == "sculpture"][0], "exact")
+
+_z = _solve_unique(
+    ["Halle", "Ronan", "Xia"], ["apple juice", "orange juice", "grape juice"],
+    [lambda a: a["Halle"] != "grape juice", lambda a: a["Ronan"] == "orange juice"],
+)
+_q("logic",
+   "Three friends, Halle, Ronan, and Xia, each drink a different juice: "
+   "apple, orange, grape. Halle doesn't drink grape juice. Ronan drinks "
+   "orange juice. Who drinks grape juice?",
+   [n for n, v in _z.items() if v == "grape juice"][0], "exact")
+
+_aa = _solve_unique(
+    ["Tobias", "Nadia", "Emre"], ["hockey", "tennis", "badminton"],
+    [lambda a: a["Tobias"] != "badminton", lambda a: a["Nadia"] == "tennis"],
+)
+_q("logic",
+   "Three friends, Tobias, Nadia, and Emre, each play a different sport: "
+   "hockey, tennis, badminton. Tobias doesn't play badminton. Nadia "
+   "plays tennis. Who plays badminton?",
+   [n for n, v in _aa.items() if v == "badminton"][0], "exact")
+
+_ab = _solve_unique(
+    ["Ingrid", "Pavel", "Chidi"], ["rose", "tulip", "daisy"],
+    [lambda a: a["Ingrid"] != "daisy", lambda a: a["Pavel"] == "tulip"],
+)
+_q("logic",
+   "Three gardeners, Ingrid, Pavel, and Chidi, each grow a different "
+   "flower: rose, tulip, daisy. Ingrid doesn't grow daisies. Pavel grows "
+   "tulips. Who grows daisies?",
+   [n for n, v in _ab.items() if v == "daisy"][0], "exact")
+
+_ac = _solve_unique(
+    ["Saoirse", "Dmitri", "Lina"], ["bus", "train", "bike"],
+    [lambda a: a["Saoirse"] != "bike", lambda a: a["Dmitri"] == "train"],
+)
+_q("logic",
+   "Three friends, Saoirse, Dmitri, and Lina, each commute a different "
+   "way: bus, train, bike. Saoirse doesn't commute by bike. Dmitri "
+   "commutes by train. Who commutes by bike?",
+   [n for n, v in _ac.items() if v == "bike"][0], "exact")
+
+_ad = _solve_unique(
+    ["Yusuf", "Camille", "Bashir", "Freya"], ["red wine", "white wine", "cider", "beer"],
+    [lambda a: a["Yusuf"] != "cider", lambda a: a["Yusuf"] != "beer",
+     lambda a: a["Camille"] == "white wine", lambda a: a["Bashir"] != "beer"],
+)
+_q("logic",
+   "Four friends, Yusuf, Camille, Bashir, and Freya, each ordered a "
+   "different drink: red wine, white wine, cider, beer. Yusuf didn't "
+   "order cider or beer. Camille ordered white wine. Bashir didn't order "
+   "beer. Who ordered beer?",
+   [n for n, v in _ad.items() if v == "beer"][0], "exact")
+
+_ae = _solve_unique(
+    ["Arun", "Zainab", "Peder", "Mila"], ["north", "south", "east", "west"],
+    [lambda a: a["Arun"] != "east", lambda a: a["Arun"] != "west",
+     lambda a: a["Zainab"] == "south", lambda a: a["Peder"] != "west"],
+)
+_q("logic",
+   "Four coworkers, Arun, Zainab, Peder, and Mila, were each assigned a "
+   "different office wing: north, south, east, west. Arun wasn't "
+   "assigned east or west. Zainab was assigned south. Peder wasn't "
+   "assigned west. Who was assigned the west wing?",
+   [n for n, v in _ae.items() if v == "west"][0], "exact")
+
+_af = _solve_unique(
+    ["Katarina", "Boaz", "Ifeoma", "Stellan"], ["cello", "harp", "oboe", "clarinet"],
+    [lambda a: a["Katarina"] != "oboe", lambda a: a["Katarina"] != "clarinet",
+     lambda a: a["Boaz"] == "harp", lambda a: a["Ifeoma"] != "clarinet"],
+)
+_q("logic",
+   "Four musicians, Katarina, Boaz, Ifeoma, and Stellan, each play a "
+   "different instrument: cello, harp, oboe, clarinet. Katarina doesn't "
+   "play oboe or clarinet. Boaz plays harp. Ifeoma doesn't play "
+   "clarinet. Who plays clarinet?",
+   [n for n, v in _af.items() if v == "clarinet"][0], "exact")
+
+_ag = _solve_unique(
+    ["Rosalind", "Achille", "Ngozi", "Baptiste"], ["gold medal", "silver medal", "bronze medal", "ribbon"],
+    [lambda a: a["Rosalind"] != "bronze medal", lambda a: a["Rosalind"] != "ribbon",
+     lambda a: a["Achille"] == "silver medal", lambda a: a["Ngozi"] != "ribbon"],
+)
+_q("logic",
+   "Four competitors, Rosalind, Achille, Ngozi, and Baptiste, each "
+   "received a different award: gold medal, silver medal, bronze medal, "
+   "ribbon. Rosalind didn't receive the bronze medal or the ribbon. "
+   "Achille received the silver medal. Ngozi didn't receive the ribbon. "
+   "Who received the ribbon?",
+   [n for n, v in _ag.items() if v == "ribbon"][0], "exact")
+
+_ah = _solve_unique(
+    ["Esben", "Ayaan", "Marguerite", "Ochieng"], ["python", "java", "rust", "go"],
+    [lambda a: a["Esben"] != "rust", lambda a: a["Esben"] != "go",
+     lambda a: a["Ayaan"] == "java", lambda a: a["Marguerite"] != "go"],
+)
+_q("logic",
+   "Four developers, Esben, Ayaan, Marguerite, and Ochieng, each write "
+   "in a different programming language: Python, Java, Rust, Go. Esben "
+   "doesn't write Rust or Go. Ayaan writes Java. Marguerite doesn't "
+   "write Go. Who writes Go?",
+   [n for n, v in _ah.items() if v == "go"][0], "exact")
+
+_ai = _solve_unique(
+    ["Perpetua", "Njord", "Aziza", "Colm"], ["morning shift", "afternoon shift", "evening shift", "night shift"],
+    [lambda a: a["Perpetua"] != "evening shift", lambda a: a["Perpetua"] != "night shift",
+     lambda a: a["Njord"] == "afternoon shift", lambda a: a["Aziza"] != "night shift"],
+)
+_q("logic",
+   "Four coworkers, Perpetua, Njord, Aziza, and Colm, each work a "
+   "different shift: morning, afternoon, evening, night. Perpetua "
+   "doesn't work evening or night. Njord works afternoon. Aziza doesn't "
+   "work night. Who works the night shift?",
+   [n for n, v in _ai.items() if v == "night shift"][0], "exact")
+
+_aj = _solve_unique(
+    ["Wilhelmina", "Boyd", "Nkechi", "Tobias"], ["strawberry", "vanilla", "chocolate", "mint"],
+    [lambda a: a["Wilhelmina"] != "chocolate", lambda a: a["Wilhelmina"] != "mint",
+     lambda a: a["Boyd"] == "vanilla", lambda a: a["Nkechi"] != "mint"],
+)
+_q("logic",
+   "Four friends, Wilhelmina, Boyd, Nkechi, and Tobias, each chose a "
+   "different ice cream flavor: strawberry, vanilla, chocolate, mint. "
+   "Wilhelmina didn't choose chocolate or mint. Boyd chose vanilla. "
+   "Nkechi didn't choose mint. Who chose mint?",
+   [n for n, v in _aj.items() if v == "mint"][0], "exact")
+
 # ----------------------------------------------------------- code_debug
 
 _q("code_debug",
@@ -733,6 +978,136 @@ _q("code_debug",
        {"args": [[5]], "expected": True},
    ]}, "exec")
 
+_q("code_debug",
+   "This function should return whether a string is empty but has a "
+   "bug:\ndef is_empty(s):\n    return s == None\nFind and fix it.",
+   {"function_name": "is_empty", "tests": [
+       {"args": [""], "expected": True},
+       {"args": ["a"], "expected": False},
+       {"args": [" "], "expected": False},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should return the product of all numbers in a list "
+   "but has a bug:\ndef product(nums):\n    result = 0\n"
+   "    for n in nums:\n        result *= n\n    return result\n"
+   "Find and fix it.",
+   {"function_name": "product", "tests": [
+       {"args": [[1, 2, 3, 4]], "expected": 24},
+       {"args": [[5]], "expected": 5},
+       {"args": [[2, 2, 2]], "expected": 8},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should return whether a string contains only digits "
+   "but has a bug:\ndef is_numeric(s):\n    return s.isalpha()\n"
+   "Find and fix it.",
+   {"function_name": "is_numeric", "tests": [
+       {"args": ["123"], "expected": True},
+       {"args": ["12a"], "expected": False},
+       {"args": ["abc"], "expected": False},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should merge two already-sorted lists into one sorted "
+   "(ascending) list but has a bug:\n"
+   "def merge_sorted(a, b):\n    return sorted(a + b, reverse=True)\n"
+   "Find and fix it.",
+   {"function_name": "merge_sorted", "tests": [
+       {"args": [[1, 3, 5], [2, 4, 6]], "expected": [1, 2, 3, 4, 5, 6]},
+       {"args": [[], [1, 2]], "expected": [1, 2]},
+       {"args": [[5], []], "expected": [5]},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should check if parentheses in a string are balanced "
+   "but has a bug:\ndef is_balanced(s):\n    count = 0\n"
+   "    for c in s:\n        if c == '(':\n            count += 1\n"
+   "        elif c == ')':\n            count -= 1\n    return True\n"
+   "Find and fix it.",
+   {"function_name": "is_balanced", "tests": [
+       {"args": ["(())"], "expected": True},
+       {"args": ["(()"], "expected": False},
+       {"args": [")("], "expected": False},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should compute the average of a list excluding one "
+   "given value (only the first match, if it appears) but has a bug - "
+   "it isn't excluding anything at all:\n"
+   "def average_excluding(nums, exclude):\n    total = sum(nums)\n"
+   "    count = len(nums)\n    return total / count\nFind and fix it.",
+   {"function_name": "average_excluding", "tests": [
+       {"args": [[10, 20, 30, 40], 10], "expected": sum([20, 30, 40]) / 3},
+       {"args": [[5, 15, 25, 35], 35], "expected": sum([5, 15, 25]) / 3},
+       {"args": [[100, 200, 300, 400], 200], "expected": sum([100, 300, 400]) / 3},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should return whether every element in a list is "
+   "unique but has inverted logic:\n"
+   "def all_unique(items):\n    seen = []\n    for i in items:\n"
+   "        if i in seen:\n            return True\n"
+   "        seen.append(i)\n    return False\nFind and fix it.",
+   {"function_name": "all_unique", "tests": [
+       {"args": [[1, 2, 3]], "expected": True},
+       {"args": [[1, 2, 2]], "expected": False},
+       {"args": [[]], "expected": True},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should convert a list of (key, value) tuples into a "
+   "dict but has a bug:\n"
+   "def pairs_to_dict(pairs):\n    return {pairs[0]: pairs[1]}\n"
+   "Find and fix it.",
+   {"function_name": "pairs_to_dict", "tests": [
+       {"args": [[["a", 1], ["b", 2]]], "expected": {"a": 1, "b": 2}},
+       {"args": [[["x", 10]]], "expected": {"x": 10}},
+       {"args": [[]], "expected": {}},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should compute n factorial iteratively but has a "
+   "bug:\ndef factorial_iter(n):\n    result = 1\n"
+   "    for i in range(1, n):\n        result *= i\n    return result\n"
+   "Find and fix it.",
+   {"function_name": "factorial_iter", "tests": [
+       {"args": [5], "expected": 120},
+       {"args": [1], "expected": 1},
+       {"args": [0], "expected": 1},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should check if n is a multiple of a given number but "
+   "has a bug:\ndef is_multiple(n, of):\n    return n % of == 1\n"
+   "Find and fix it.",
+   {"function_name": "is_multiple", "tests": [
+       {"args": [10, 5], "expected": True},
+       {"args": [10, 3], "expected": False},
+       {"args": [0, 5], "expected": True},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should remove all vowels from a string but has "
+   "inverted logic:\n"
+   "def remove_vowels(s):\n    return \"\".join(c for c in s if c in "
+   "\"aeiou\")\nFind and fix it.",
+   {"function_name": "remove_vowels", "tests": [
+       {"args": ["hello"], "expected": "hll"},
+       {"args": ["xyz"], "expected": "xyz"},
+       {"args": ["banana"], "expected": "bnn"},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should return the range (max minus min) of a list "
+   "but has a bug:\ndef value_range(nums):\n"
+   "    return max(nums) + min(nums)\nFind and fix it.",
+   {"function_name": "value_range", "tests": [
+       {"args": [[1, 5, 3]], "expected": 4},
+       {"args": [[10, 10, 10]], "expected": 0},
+       {"args": [[-5, 5]], "expected": 10},
+   ]}, "exec")
+
 # ------------------------------------------------------------- code_gen
 
 _q("code_gen",
@@ -889,6 +1264,124 @@ _q("code_gen",
        {"args": ["hello world foo"], "expected": 3},
        {"args": [""], "expected": 0},
        {"args": ["  spaced   out  "], "expected": 2},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called is_armstrong_number that returns True "
+   "if a given positive integer equals the sum of its own digits each "
+   "raised to the power of the number of digits, and False otherwise.",
+   {"function_name": "is_armstrong_number", "tests": [
+       {"args": [153], "expected": True},
+       {"args": [10], "expected": False},
+       {"args": [9474], "expected": True},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called caesar_cipher_encode that shifts "
+   "every letter in a string forward by a given number of positions in "
+   "the alphabet, wrapping around from z to a, preserving each letter's "
+   "case, and leaving non-letter characters unchanged.",
+   {"function_name": "caesar_cipher_encode", "tests": [
+       {"args": ["abc", 1], "expected": "bcd"},
+       {"args": ["xyz", 3], "expected": "abc"},
+       {"args": ["Hello, World!", 5], "expected": "Mjqqt, Btwqi!"},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called binary_to_decimal that converts a "
+   "string of 0s and 1s into its decimal integer value.",
+   {"function_name": "binary_to_decimal", "tests": [
+       {"args": ["101"], "expected": 5},
+       {"args": ["0"], "expected": 0},
+       {"args": ["1111"], "expected": 15},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called decimal_to_binary that converts a "
+   "non-negative integer into its binary string representation, with no "
+   "leading '0b' prefix.",
+   {"function_name": "decimal_to_binary", "tests": [
+       {"args": [5], "expected": "101"},
+       {"args": [0], "expected": "0"},
+       {"args": [255], "expected": "11111111"},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called longest_word that returns the "
+   "longest word in a sentence (you can assume there's always a single "
+   "unique longest word in the test inputs).",
+   {"function_name": "longest_word", "tests": [
+       {"args": ["I love programming"], "expected": "programming"},
+       {"args": ["cat dog elephant"], "expected": "elephant"},
+       {"args": ["a bb ccc"], "expected": "ccc"},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called matrix_transpose that returns the "
+   "transpose of a 2D list (a list of lists, all rows the same length).",
+   {"function_name": "matrix_transpose", "tests": [
+       {"args": [[[1, 2], [3, 4]]], "expected": [[1, 3], [2, 4]]},
+       {"args": [[[1, 2, 3]]], "expected": [[1], [2], [3]]},
+       {"args": [[[1], [2], [3]]], "expected": [[1, 2, 3]]},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called celsius_to_fahrenheit that converts "
+   "a temperature in Celsius to Fahrenheit.",
+   {"function_name": "celsius_to_fahrenheit", "tests": [
+       {"args": [0], "expected": 32},
+       {"args": [100], "expected": 212},
+       {"args": [-40], "expected": -40},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called is_pangram that returns True if a "
+   "string contains every letter of the English alphabet at least once, "
+   "ignoring case, and False otherwise.",
+   {"function_name": "is_pangram", "tests": [
+       {"args": ["The quick brown fox jumps over the lazy dog"], "expected": True},
+       {"args": ["hello world"], "expected": False},
+       {"args": ["Pack my box with five dozen liquor jugs"], "expected": True},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called chunk_list that splits a list into "
+   "consecutive chunks of a given size, where the last chunk may be "
+   "smaller than the rest.",
+   {"function_name": "chunk_list", "tests": [
+       {"args": [[1, 2, 3, 4, 5], 2], "expected": [[1, 2], [3, 4], [5]]},
+       {"args": [[1, 2, 3], 5], "expected": [[1, 2, 3]]},
+       {"args": [[], 3], "expected": []},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called first_unique_char that returns the "
+   "first character in a string that doesn't repeat anywhere else in "
+   "it, or None if every character repeats.",
+   {"function_name": "first_unique_char", "tests": [
+       {"args": ["swiss"], "expected": "w"},
+       {"args": ["aabbcc"], "expected": None},
+       {"args": ["teeter"], "expected": "r"},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called is_subsequence that returns True if "
+   "every character of string a appears in string b in the same order "
+   "(not necessarily contiguously), and False otherwise.",
+   {"function_name": "is_subsequence", "tests": [
+       {"args": ["ace", "abcde"], "expected": True},
+       {"args": ["aec", "abcde"], "expected": False},
+       {"args": ["", "abc"], "expected": True},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called max_subarray_sum that returns the "
+   "largest possible sum of any contiguous subarray of a list of "
+   "integers (the list always has at least one element).",
+   {"function_name": "max_subarray_sum", "tests": [
+       {"args": [[-2, 1, -3, 4, -1, 2, 1, -5, 4]], "expected": 6},
+       {"args": [[1, 2, 3, 4]], "expected": 10},
+       {"args": [[-1, -2, -3]], "expected": -1},
    ]}, "exec")
 
 
