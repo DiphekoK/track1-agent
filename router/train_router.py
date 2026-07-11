@@ -95,17 +95,23 @@ def main():
     device = pick_device()
     print(f"training on {device}")
 
-    # labeled_dataset.jsonl comes out grouped by category (all the math
-    # queries, then all the sentiment ones, etc.) - slicing it 80/20 in
-    # that order means the test split ends up being whichever categories
-    # happen to fall at the end, not a representative sample. Shuffle
-    # first (fixed seed so runs are comparable) so both splits actually
-    # look like the whole dataset.
-    records = records.copy()
-    random.Random(42).shuffle(records)
-
-    split = int(len(records) * 0.8)
-    train_records, test_records = records[:split], records[split:]
+    # A plain shuffle-then-slice fixes the "whole categories missing from
+    # training" bug, but "fireworks" is already the minority label (usually
+    # a fifth of the dataset or less) - a random 80/20 split still has a
+    # real chance of putting zero of them in the test set, which makes
+    # fireworks_precision/recall meaningless rather than just low. Split
+    # each label's records 80/20 on their own, then recombine, so both
+    # splits always get their proportional share of the minority class.
+    rng = random.Random(42)
+    train_records, test_records = [], []
+    for label in LABELS:
+        group = [r for r in records if r["label"] == label]
+        rng.shuffle(group)
+        split = int(len(group) * 0.8)
+        train_records += group[:split]
+        test_records += group[split:]
+    rng.shuffle(train_records)
+    rng.shuffle(test_records)
 
     tokenizer = DistilBertTokenizerFast.from_pretrained("distilbert-base-uncased")
     model = DistilBertForSequenceClassification.from_pretrained(
