@@ -79,6 +79,25 @@ def ensure_local_model():
             return False
 
 
+ROUTER_WEIGHTS_URL = "https://github.com/DiphekoK/track1-agent/releases/download/router-weights/model.safetensors"
+
+
+def ensure_router_weights():
+    # config.json/tokenizer files come from git (small), but the actual
+    # weights file is a GitHub Release asset (~255MB, too big for a normal
+    # git push - same reasoning as the Dockerfile's curl step). A plain
+    # git clone, which is what Streamlit Cloud does, never fetches it.
+    model_dir = ROOT / "router" / "model"
+    weights_path = model_dir / "model.safetensors"
+    if weights_path.exists() or not (model_dir / "config.json").exists():
+        return
+    with st.spinner("Downloading trained router weights (~255MB, first run only)…"):
+        try:
+            urllib.request.urlretrieve(ROUTER_WEIGHTS_URL, str(weights_path))
+        except Exception as e:
+            st.info(f"Trained router weights not available ({e}) - using the heuristic instead.")
+
+
 def get_config():
     local_label = Path(local_llm.MODEL_PATH).stem
     try:
@@ -136,6 +155,7 @@ if "history" not in st.session_state:
 if "prompt" not in st.session_state:
     st.session_state.prompt = ""
 
+ensure_router_weights()
 cfg = get_config()
 
 header_left, header_right = st.columns([2, 1])
