@@ -1,11 +1,14 @@
 """
-Figures out which capability category a prompt belongs to, and whether
-we can answer it with the local model or need to spend Fireworks tokens.
+Figures out which of the 8 hackathon capability categories a prompt
+belongs to. Used for two things: picking the right system prompt in
+fireworks_client.py/local_llm.py, and as the routing fallback
+(should_use_local) when router/infer_router.py's trained weights
+aren't available yet.
 
-This is just keyword/regex based - no ML here. Good enough for routing,
-doesn't need to be perfect since the categories are pretty distinct in
-practice. If it misclassifies something occasionally that's fine, it'll
-just get handled by the "wrong" backend and probably still be okay.
+Just keyword/regex based, no ML here - that lives in router/ now,
+trained on actually-measured pass/fail data instead of hand-picked
+category rules. This file is the "we have no trained router at all"
+safety net.
 """
 import re
 

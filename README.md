@@ -1,25 +1,93 @@
 # Track 1 agent
 
-Routes tasks to a local Qwen2.5-1.5B model for the categories it can handle
-(factual, sentiment, summarization, NER) and to Fireworks for the ones that
-need a bigger model (math, logic puzzles, code debugging, code generation).
-Local calls are free toward the score, so the goal is to only spend
-Fireworks tokens where the small model would likely get it wrong.
+Routes each task to either the local model (free) or Fireworks (costs
+tokens). The routing decision itself is a small fine-tuned classifier
+(`router/`) trained on measured pass/fail data, not a hand-picked list of
+"these categories are hard" - see "Why a trained router" below.
 
-## Build + test locally (do this first)
+## Architecture
 
-The build pulls down the local model (~1GB) plus base image/deps (~1.1GB
-total), so it needs a decent connection. One-time setup if `buildx` isn't
-already configured:
+- `agent.py` - entry point, reads `/input/tasks.json`, writes `/output/results.json`
+- `categories.py` - regex classifier used to pick the right system prompt per
+  task, and as a fallback routing rule if the trained router isn't available
+- `local_llm.py` - local Qwen2.5-1.5B via llama-cpp-python, the free tier
+- `fireworks_client.py` - Fireworks chat wrapper, the paid tier
+- `baseline_router.py` - alternative routing: ask a model to classify before
+  answering (costs a call per task, kept for comparison)
+- `router/infer_router.py` - loads the trained classifier, zero-cost routing
+- `router/train_router.py` - fine-tunes DistilBERT on labeled data
+- `data/generate_adversarial.py` - builds a labeled query set with verifiable
+  ground truth across all 8 categories
+- `data/label_dataset.py` - runs the local model against that set, grades it,
+  labels each query "local" (local model got it right) or "fireworks"
+  (it didn't)
+
+## Why a trained router instead of hand-picked categories
+
+Originally this just hardcoded "math/logic/code go to Fireworks, everything
+else stays local" based on a guess about which categories a small model
+struggles with. That's exactly the kind of assumption worth checking instead
+of shipping: run the local model against a real, verifiable test set and see
+what it actually gets wrong, then train a lightweight classifier on that.
+
+Two things fall out of doing it this way:
+
+- If the local model turns out to be fine on some "hard" category, that
+  category stops needlessly burning Fireworks tokens.
+- If it turns out to be shaky on something assumed "easy", that gets caught
+  before the real evaluation does, not after the accuracy gate fails.
+
+## Setup (do this before building the image)
+
+```
+pip install -r requirements.txt
+pip install llama-cpp-python==0.3.5 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+pip install torch==2.4.1 --index-url https://download.pytorch.org/whl/cpu
+```
+
+Download the local model to the path `local_llm.py` expects when run outside
+docker:
+
+```
+mkdir -p models
+curl -L -o models/qwen2.5-1.5b-instruct-q4_k_m.gguf \
+  https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf
+export LOCAL_MODEL_PATH="$(pwd)/models/qwen2.5-1.5b-instruct-q4_k_m.gguf"   # Windows: $env:LOCAL_MODEL_PATH
+```
+
+## Build the router (run once, or whenever you add more adversarial queries)
+
+```
+python data/generate_adversarial.py   # writes data/queries.jsonl, verifies logic puzzles + math while doing it
+python data/label_dataset.py          # runs the local model against every query, writes data/labeled_dataset.jsonl
+python router/train_router.py         # fine-tunes DistilBERT, saves to router/model/
+```
+
+None of these three need a working Fireworks account - grading is all
+programmatic (numeric match, keyword containment, exec test-pass, exact
+match for logic), not an LLM judge. Watch `label_dataset.py`'s output: if a
+whole category comes back 100% "fireworks", the local model is failing it
+consistently and might need a better system prompt in `local_llm.py` rather
+than just eating the token cost - worth a look before training on it.
+
+`train_router.py` will complain and exit if there's fewer than 10 labeled
+records - that just means generate/label didn't run first.
+
+## Build + test the container
+
+The image download is ~1.3GB total (base image + deps + the ~940MB local
+model), separate from the ~270MB DistilBERT base weights pulled during
+`train_router.py` above. Make sure you're not on a metered connection.
+
+One-time buildx setup if you haven't used it before:
 
 ```
 docker buildx create --use
 ```
 
-Build it:
+Build:
 
 ```
-cd track1-agent
 docker buildx build --platform linux/amd64 --tag track1-agent:local --load .
 ```
 
@@ -27,10 +95,10 @@ Set up real credentials for a local test run:
 
 ```
 cp .env.example .env
-# edit .env and fill in FIREWORKS_API_KEY / FIREWORKS_BASE_URL / ALLOWED_MODELS
+# fill in FIREWORKS_API_KEY / FIREWORKS_BASE_URL / ALLOWED_MODELS
 ```
 
-Run it against the practice tasks already sitting in `input/tasks.json`:
+Run against the practice tasks in `input/tasks.json`:
 
 ```
 docker run --rm \
@@ -40,16 +108,26 @@ docker run --rm \
   track1-agent:local
 ```
 
-Check `output/results.json` - should have one `{task_id, answer}` entry per
-practice task. Check the container logs for `[warn]`/`[error]` lines too.
+Check `output/results.json` - one `{task_id, answer}` entry per practice
+task. Check container logs for `[warn]`/`[error]` lines too.
 
 Sanity checks worth doing before submitting:
-- `docker images track1-agent:local` - compressed size should be nowhere
-  near the 10GB cap (this one should land around 2-3GB)
-- results.json entries for practice-02/06/07/08 (math/debug/logic/codegen)
-  came back sensible - those are the ones burning Fireworks tokens
-- results.json entries for practice-01/03/04/05 came back sensible - those
-  are local-only, zero cost
+- `docker images track1-agent:local` - compressed size well under the 10GB cap
+- results for practice-02/06/07/08 (math/debug/logic/codegen) look sensible
+- if `router/model/` was empty when you built (training pipeline skipped),
+  logs will show `finetuned router weights not found, falling back to
+  heuristic categories` - the container still runs correctly, it just uses
+  the old hand-picked category list instead of the trained one
+
+## ROUTER_MODE
+
+- `finetuned` (default) - trained classifier, zero-cost routing decision
+- `baseline` - asks a Fireworks model to classify first (costs tokens on
+  every task just for the routing decision, not just the ones that get
+  escalated - kept around to demonstrate why the finetuned router is worth
+  having)
+- `heuristic` - always use `categories.py`'s hand-picked list, skips the
+  trained classifier entirely
 
 ## Push to the registry
 
@@ -58,14 +136,6 @@ docker login ghcr.io -u <your-github-username>
 docker buildx build --platform linux/amd64 --tag ghcr.io/<your-github-username>/track1-agent:latest --push .
 ```
 
-(swap the tag for Docker Hub if that's what's being used for submission -
-same command shape, just `docker login` to Docker Hub instead)
-
-## Notes
-
-- Router is regex/keyword based, see `app/router.py` for what triggers each
-  category.
-- If a backend throws for a given task, the other backend is tried before
-  giving up, so one bad call doesn't zero out that task.
-- Local model path/ctx size are in `app/local_llm.py` if the model needs to
-  change later.
+Remember to make the resulting package **public** in GitHub's package
+settings - GHCR images default to private even after a successful push,
+and a private image fails to pull at evaluation time.
