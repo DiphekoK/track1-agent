@@ -21,7 +21,7 @@ Query: {prompt}"""
 
 def _classify_model():
     if os.environ.get("MODEL_CLASSIFY"):
-        return os.environ["MODEL_CLASSIFY"]
+        return os.environ["MODEL_CLASSIFY"].strip()
     return os.environ["ALLOWED_MODELS"].split(",")[0].strip()
 
 

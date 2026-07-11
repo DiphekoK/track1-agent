@@ -41,7 +41,7 @@ def get_fireworks_model():
     # testing; on submission day there's no such env var, so this falls
     # back to whatever the harness put in ALLOWED_MODELS
     if os.environ.get("MODEL_EXPENSIVE"):
-        return os.environ["MODEL_EXPENSIVE"]
+        return os.environ["MODEL_EXPENSIVE"].strip()
     return os.environ["ALLOWED_MODELS"].split(",")[0].strip()
 
 

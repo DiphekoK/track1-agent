@@ -28,8 +28,13 @@ SYSTEM_PROMPTS = {
 def _get_client():
     global _client
     if _client is None:
-        api_key = os.environ["FIREWORKS_API_KEY"]
-        base_url = os.environ["FIREWORKS_BASE_URL"]
+        # .strip() because a stray trailing newline in one of these (easy to
+        # pick up when pasting a secret value from a file) turns into a
+        # confusing httpx.InvalidURL instead of an obviously-bad-credential
+        # error, so it's worth guarding against here rather than trusting
+        # whatever set the env var to have done it cleanly.
+        api_key = os.environ["FIREWORKS_API_KEY"].strip()
+        base_url = os.environ["FIREWORKS_BASE_URL"].strip()
         _client = OpenAI(api_key=api_key, base_url=base_url)
     return _client
 
