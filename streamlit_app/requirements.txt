@@ -4,8 +4,11 @@ openai==1.59.6
 # runtime is whatever Python they currently default to (3.14 as of this
 # writing), and torch==2.4.1/transformers==4.44.2 predate that entirely.
 # This deployment doesn't need version parity with the submission image.
+#
+# No llama-cpp-python here - this deployment doesn't run the local Qwen
+# model at all (too much memory/disk for this tier, and it kept
+# segfaulting the process). "local"-routed queries get answered by a
+# cheap Fireworks model instead (see app.py's get_cheap_model()).
 transformers
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch
---extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
-llama-cpp-python==0.3.30

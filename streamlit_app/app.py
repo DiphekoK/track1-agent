@@ -1,3 +1,25 @@
+"""
+Streamlit deployment of the Query Router demo. Calls the actual project
+modules (categories.py, fireworks_client.py, baseline_router.py,
+router/infer_router.py) directly - no separate backend server needed,
+Streamlit is both.
+
+Does NOT run the local Qwen model - that was the single biggest disk
+(~1GB gguf) and memory consumer in this process, and kept segfaulting
+it even after freeing the trained router's memory between queries.
+"local"-routed queries are answered by a cheap Fireworks model instead
+(MODEL_CHEAP), labeled honestly in the UI as a substitute rather than
+passed off as real local inference. The router's own decision is still
+real either way - only the answer-generation step changes.
+
+Deploy: push to GitHub, then on share.streamlit.io point the app at
+streamlit_app/app.py and add these as Secrets (Settings > Secrets, TOML
+format) - same values as your local .env:
+    FIREWORKS_API_KEY = "..."
+    FIREWORKS_BASE_URL = "..."
+    MODEL_EXPENSIVE = "..."
+    MODEL_CHEAP = "..."
+"""
 import os
 import sys
 import time
@@ -20,16 +42,7 @@ try:
 except Exception:
     pass  # no secrets.toml locally - fine, .env / real env vars cover that case
 
-MODEL_URL = "https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf"
-os.environ.setdefault("LOCAL_MODEL_PATH", str(ROOT / "models" / "qwen2.5-1.5b-instruct-q4_k_m.gguf"))
-# The default 2048 costs a few hundred MB of KV cache this deployment's
-# memory-constrained tier can't spare - 768 comfortably covers a system
-# prompt + demo-length query + the 300-token answer budget with room to
-# spare. Only overridden here; the Docker image and local runs keep 2048.
-os.environ.setdefault("LOCAL_LLM_N_CTX", "768")
-
 import categories
-import local_llm
 import fireworks_client
 import baseline_router
 import agent
@@ -49,18 +62,17 @@ def estimate_tokens(s):
     return max(1, round(len(s or "") / 3.6))
 
 
-def ensure_local_model():
-    path = Path(local_llm.MODEL_PATH)
-    if path.exists():
-        return True
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with st.spinner(f"Downloading the local model (~1GB, first run only)…"):
-        try:
-            urllib.request.urlretrieve(MODEL_URL, str(path))
-            return True
-        except Exception as e:
-            st.warning(f"Couldn't download the local model ({e}) - local-tier queries will fail over to Fireworks.")
-            return False
+def get_cheap_model():
+    # This deployment doesn't run the local Qwen model at all - it was the
+    # single biggest disk/memory consumer (a ~1GB gguf plus llama-cpp-python's
+    # own native footprint) and kept crashing the process even after
+    # freeing the router's memory first. "local"-routed queries get
+    # answered by a cheap Fireworks model instead, labeled honestly in the
+    # UI rather than silently passed off as local.
+    val = os.environ.get("MODEL_CHEAP")
+    if not val:
+        raise KeyError("MODEL_CHEAP")
+    return val.strip()
 
 
 ROUTER_WEIGHTS_URL = "https://github.com/DiphekoK/track1-agent/releases/download/router-weights/model.safetensors"
@@ -83,7 +95,12 @@ def ensure_router_weights():
 
 
 def get_config():
-    local_label = Path(local_llm.MODEL_PATH).stem
+    try:
+        cheap_label = get_cheap_model().rsplit("/", 1)[-1]
+        cheap_error = None
+    except KeyError as e:
+        cheap_label = None
+        cheap_error = f"missing env var {e}"
     try:
         fireworks_label = agent.get_fireworks_model().rsplit("/", 1)[-1]
         fireworks_error = None
@@ -91,7 +108,8 @@ def get_config():
         fireworks_label = None
         fireworks_error = f"missing env var {e}"
     return {
-        "local_model": local_label,
+        "cheap_model": cheap_label,
+        "cheap_error": cheap_error,
         "fireworks_model": fireworks_label,
         "fireworks_error": fireworks_error,
         "router_available": router_available(),
@@ -121,14 +139,10 @@ def run_baseline(prompt):
 
 def run_answer(prompt, category, backend):
     try:
-        if backend == "local":
-            text, tokens = local_llm.answer_with_usage(prompt, category)
-            if tokens is None:
-                tokens = estimate_tokens(prompt) + estimate_tokens(text)
-        else:
-            system = fireworks_client.SYSTEM_PROMPTS.get(category)
-            resp = fireworks_client.chat(agent.get_fireworks_model(), prompt, system=system, max_tokens=400)
-            text, tokens = resp["text"], resp["total_tokens"]
+        system = fireworks_client.SYSTEM_PROMPTS.get(category)
+        model = get_cheap_model() if backend == "local" else agent.get_fireworks_model()
+        resp = fireworks_client.chat(model, prompt, system=system, max_tokens=400)
+        text, tokens = resp["text"], resp["total_tokens"]
         return {"backend": backend, "text": text, "tokens": tokens, "error": None}
     except Exception as e:
         return {"backend": backend, "text": None, "tokens": 0, "error": str(e)}
@@ -153,11 +167,18 @@ with header_left:
     )
 with header_right:
     st.markdown("**MODEL TIERS**")
-    st.markdown(f"🟦 **Local** &nbsp; `{cfg['local_model']}`")
-    st.markdown(f"🟧 **Fireworks** &nbsp; `{cfg['fireworks_model'] or 'not configured'}`")
+    st.markdown(f"🟦 **Cheap** &nbsp; `{cfg['cheap_model'] or 'not configured'}` (Fireworks)")
+    st.markdown(f"🟧 **Escalation** &nbsp; `{cfg['fireworks_model'] or 'not configured'}` (Fireworks)")
 
+st.info(
+    "This hosted demo doesn't run the local Qwen model (too much memory/disk for this tier) - "
+    "the router's decision is still real, but 'local'-routed queries are answered by a cheap "
+    "Fireworks model instead, labeled as such below rather than passed off as local."
+)
 if not cfg["router_available"]:
     st.info("Trained router weights not available in this deployment - using the heuristic category rules instead.")
+if cfg["cheap_error"]:
+    st.warning(f"Cheap-tier model isn't configured ({cfg['cheap_error']}) - local-routed queries will fail until MODEL_CHEAP is set.")
 if cfg["fireworks_error"]:
     st.warning(f"Fireworks isn't configured ({cfg['fireworks_error']}) - escalated queries will fail until secrets are set.")
 
@@ -238,9 +259,6 @@ if run_clicked:
     q = prompt.strip()
     category = categories.classify(q)
 
-    if categories.should_use_local(category):
-        ensure_local_model()
-
     status1.info("Classifying locally…")
     t0 = time.time()
     ft = decide_finetuned(q, category)
@@ -250,14 +268,9 @@ if run_clicked:
     if ft["note"]:
         col1.caption(ft["note"])
 
-    # Free the router's weights before the local model potentially loads -
-    # this process crashed (segfault) with both resident together, and the
-    # decision is already made, so there's no reason to keep them both in
-    # memory for the rest of the run.
+    # Free the router's weights now that the decision's made - cheap
+    # insurance even without the local model in the picture anymore.
     router_unload()
-
-    if ft["backend"] == "local":
-        ensure_local_model()
 
     status2.info("Calling classifier…")
     bl = run_baseline(q)
@@ -271,8 +284,9 @@ if run_clicked:
     if ans["error"]:
         status3.error(ans["error"])
     else:
-        model_label = cfg["fireworks_model"] if ans["backend"] == "fireworks" else cfg["local_model"]
-        status3.info(f"**{model_label}** · ~{ans['tokens']} tokens")
+        model_label = cfg["fireworks_model"] if ans["backend"] == "fireworks" else cfg["cheap_model"]
+        substitute_note = " (local unavailable - cheap Fireworks substitute)" if ans["backend"] == "local" else ""
+        status3.info(f"**{model_label}**{substitute_note} · ~{ans['tokens']} tokens")
 
     if ans["text"]:
         st.divider()
