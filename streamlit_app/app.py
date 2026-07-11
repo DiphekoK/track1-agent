@@ -22,6 +22,11 @@ except Exception:
 
 MODEL_URL = "https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf"
 os.environ.setdefault("LOCAL_MODEL_PATH", str(ROOT / "models" / "qwen2.5-1.5b-instruct-q4_k_m.gguf"))
+# The default 2048 costs a few hundred MB of KV cache this deployment's
+# memory-constrained tier can't spare - 768 comfortably covers a system
+# prompt + demo-length query + the 300-token answer budget with room to
+# spare. Only overridden here; the Docker image and local runs keep 2048.
+os.environ.setdefault("LOCAL_LLM_N_CTX", "768")
 
 import categories
 import local_llm

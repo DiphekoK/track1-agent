@@ -40,7 +40,14 @@ def _get_llm():
     if _llm is None:
         _llm = Llama(
             model_path=MODEL_PATH,
-            n_ctx=2048,
+            # the KV cache scales directly with n_ctx - at 2048 that's a
+            # few hundred MB on top of the ~1GB model weights, more
+            # headroom than the practice tasks or demo prompts need.
+            # Configurable rather than just lowered, since the real
+            # grading harness's prompts are an unknown that shouldn't be
+            # gambled on - only the memory-constrained Streamlit demo
+            # overrides this down.
+            n_ctx=int(os.environ.get("LOCAL_LLM_N_CTX", "2048")),
             n_threads=_thread_count(),
             verbose=False,
         )
