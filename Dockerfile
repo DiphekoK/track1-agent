@@ -23,7 +23,7 @@ COPY requirements.txt .
 # container would take forever and needs a compiler toolchain we don't
 # otherwise want in the image). Same two commands as the README's local setup.
 RUN pip install --no-cache-dir -r requirements.txt \
-    && pip install --no-cache-dir llama-cpp-python==0.3.5 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu \
+    && pip install --no-cache-dir llama-cpp-python==0.3.30 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu \
     && pip install --no-cache-dir torch==2.4.1 --index-url https://download.pytorch.org/whl/cpu
 
 # Baked into the image rather than downloaded at run time - the grading box

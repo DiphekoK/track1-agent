@@ -42,7 +42,7 @@ Two things fall out of doing it this way:
 
 ```
 pip install -r requirements.txt
-pip install llama-cpp-python==0.3.5 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+pip install llama-cpp-python==0.3.30 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
 pip install torch==2.4.1 --index-url https://download.pytorch.org/whl/cpu
 ```
 
