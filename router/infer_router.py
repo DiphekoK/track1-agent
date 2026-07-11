@@ -8,6 +8,7 @@ heuristic mapping if these weights aren't present - e.g. the first
 time the container gets built, before anyone's run the training
 pipeline yet.
 """
+import gc
 import os
 
 import torch
@@ -52,3 +53,16 @@ def predict(prompt):
     probs = torch.softmax(logits, dim=1)[0]
     idx = int(torch.argmax(probs))
     return _LABELS[idx], float(probs[idx])
+
+
+def unload():
+    """Frees the loaded model/tokenizer so they're not resident at the
+    same time as a memory-heavy neighbor (the Streamlit demo's local
+    llama.cpp model, both in the same process). Costs a few seconds to
+    reload on the next predict() call. Doesn't reclaim torch/transformers'
+    own base import overhead, just the actual weights/tensors - if a
+    process is still tight after this, that overhead is the remainder."""
+    global _tokenizer, _model
+    _tokenizer = None
+    _model = None
+    gc.collect()

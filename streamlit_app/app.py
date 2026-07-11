@@ -33,7 +33,7 @@ import local_llm
 import fireworks_client
 import baseline_router
 import agent
-from router.infer_router import available as router_available, predict as router_predict
+from router.infer_router import available as router_available, predict as router_predict, unload as router_unload
 
 st.set_page_config(page_title="Token-Efficient Query Router", page_icon="🧭", layout="wide")
 
@@ -249,6 +249,12 @@ if run_clicked:
     status1.success(f"**{ft['backend']}**{conf_str} · {latency_ms}ms · 0 tokens")
     if ft["note"]:
         col1.caption(ft["note"])
+
+    # Free the router's weights before the local model potentially loads -
+    # this process crashed (segfault) with both resident together, and the
+    # decision is already made, so there's no reason to keep them both in
+    # memory for the rest of the run.
+    router_unload()
 
     if ft["backend"] == "local":
         ensure_local_model()
