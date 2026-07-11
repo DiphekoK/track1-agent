@@ -9,6 +9,14 @@ openai==1.59.6
 # model at all (too much memory/disk for this tier, and it kept
 # segfaulting the process). "local"-routed queries get answered by a
 # cheap Fireworks model instead (see app.py's get_cheap_model()).
+# Pinned to the oldest CPU build available for Python 3.14 (per the pip
+# error when 2.4.1 wasn't found: 2.9.0 through 2.13.0 exist) - the app
+# keeps crashing with a segfault the moment the router's DistilBERT model
+# runs its first real forward pass, no matter what else changes (memory,
+# reload cycles, the local model being gone). That pattern points at a
+# torch CPU-build/instruction-set issue rather than resource pressure -
+# trying an older, more conservative build before giving up on running
+# the trained router in this deployment at all.
 transformers
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch
+torch==2.9.0+cpu
