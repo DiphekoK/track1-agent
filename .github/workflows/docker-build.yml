@@ -1,0 +1,30 @@
+# Sanity check for the Track 1 submission image. Doesn't push anywhere -
+# graders build the real thing themselves off this same repo - this just
+# catches a broken Dockerfile before submission instead of after, using
+# GitHub's bandwidth instead of whatever's left of mine.
+name: docker build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - requirements.txt
+      - "**.py"
+  pull_request:
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - requirements.txt
+      - "**.py"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t track1-agent .

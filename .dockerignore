@@ -1,0 +1,17 @@
+.git
+__pycache__/
+*.pyc
+.env
+
+# local practice I/O, real ones get bind-mounted in at /input and /output
+input/
+output/
+
+# gguf gets pulled fresh at build time (see Dockerfile), no point shipping
+# whatever happens to be sitting in the local models/ dir
+models/*.gguf
+
+# offline training pipeline artifacts, not needed to run the agent
+data/queries.jsonl
+data/labeled_dataset.jsonl
+router/checkpoints/

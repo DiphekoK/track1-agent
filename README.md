@@ -109,12 +109,36 @@ Sanity checks worth doing before submitting:
 - `heuristic` - always use `categories.py`'s hand-picked list, skips the
   trained classifier entirely
 
-## Note on Track 1 submission
+## Docker
 
-The hackathon's own Track 1 requirements specify a Docker image that reads
-`/input/tasks.json` and writes `/output/results.json`. This repo currently
-has no Dockerfile - if a container submission is needed later, `agent.py`
-already reads/writes those paths (via `INPUT_PATH`/`OUTPUT_PATH`, defaulting
-to `input/tasks.json`/`output/results.json`), so wrapping it back in a
-container is just adding a Dockerfile that copies these files in and sets
-those two env vars to `/input/tasks.json` and `/output/results.json`.
+Track 1's requirements call for an image that reads `/input/tasks.json` and
+writes `/output/results.json`. That's what the Dockerfile builds - it pulls
+in the same deps as the local setup above (including the gguf, baked in at
+build time rather than downloaded on every run since the grading box isn't
+guaranteed to have internet access), then runs `agent.py` with `INPUT_PATH`
+and `OUTPUT_PATH` pointed at those two paths.
+
+Build:
+
+```
+docker build -t track1-agent .
+```
+
+Run against the practice tasks, keeping the real credentials out of the
+image by passing them at run time instead of baking them in:
+
+```
+docker run --rm \
+  --env-file .env \
+  -v "$(pwd)/input:/input" \
+  -v "$(pwd)/output:/output" \
+  track1-agent
+```
+
+Check `output/results.json` on the host afterwards, same as the local run.
+
+One thing worth knowing: `router/model/` only ships whatever's in the repo
+when the image gets built. If you haven't run the training pipeline (see
+above) before building, the container will fall back to the heuristic
+router same as it would locally - not a bug, just means the build happened
+before training did.
