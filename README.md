@@ -7,7 +7,8 @@ tokens). The routing decision itself is a small fine-tuned classifier
 
 ## Architecture
 
-- `agent.py` - entry point, reads `/input/tasks.json`, writes `/output/results.json`
+- `agent.py` - entry point, reads `input/tasks.json`, writes `output/results.json`
+  (override with `INPUT_PATH`/`OUTPUT_PATH` env vars)
 - `categories.py` - regex classifier used to pick the right system prompt per
   task, and as a fallback routing rule if the trained router isn't available
 - `local_llm.py` - local Qwen2.5-1.5B via llama-cpp-python, the free tier
@@ -37,7 +38,7 @@ Two things fall out of doing it this way:
 - If it turns out to be shaky on something assumed "easy", that gets caught
   before the real evaluation does, not after the accuracy gate fails.
 
-## Setup (do this before building the image)
+## Setup
 
 ```
 pip install -r requirements.txt
@@ -45,8 +46,7 @@ pip install llama-cpp-python==0.3.5 --extra-index-url https://abetlen.github.io/
 pip install torch==2.4.1 --index-url https://download.pytorch.org/whl/cpu
 ```
 
-Download the local model to the path `local_llm.py` expects when run outside
-docker:
+Download the local model to the path `local_llm.py` expects:
 
 ```
 mkdir -p models
@@ -73,51 +73,31 @@ than just eating the token cost - worth a look before training on it.
 `train_router.py` will complain and exit if there's fewer than 10 labeled
 records - that just means generate/label didn't run first.
 
-## Build + test the container
+## Run it
 
-The image download is ~1.3GB total (base image + deps + the ~940MB local
-model), separate from the ~270MB DistilBERT base weights pulled during
-`train_router.py` above. Make sure you're not on a metered connection.
-
-One-time buildx setup if you haven't used it before:
-
-```
-docker buildx create --use
-```
-
-Build:
-
-```
-docker buildx build --platform linux/amd64 --tag track1-agent:local --load .
-```
-
-Set up real credentials for a local test run:
+Set up real credentials:
 
 ```
 cp .env.example .env
-# fill in FIREWORKS_API_KEY / FIREWORKS_BASE_URL / ALLOWED_MODELS
+# fill in FIREWORKS_API_KEY / FIREWORKS_BASE_URL / ALLOWED_MODELS, then load them
+# into the shell (e.g. a dotenv loader, or export each var manually)
 ```
 
 Run against the practice tasks in `input/tasks.json`:
 
 ```
-docker run --rm \
-  --env-file .env \
-  -v "$(pwd)/input:/input" \
-  -v "$(pwd)/output:/output" \
-  track1-agent:local
+python agent.py
 ```
 
 Check `output/results.json` - one `{task_id, answer}` entry per practice
-task. Check container logs for `[warn]`/`[error]` lines too.
+task. Check stderr for `[warn]`/`[error]` lines too.
 
 Sanity checks worth doing before submitting:
-- `docker images track1-agent:local` - compressed size well under the 10GB cap
 - results for practice-02/06/07/08 (math/debug/logic/codegen) look sensible
-- if `router/model/` was empty when you built (training pipeline skipped),
-  logs will show `finetuned router weights not found, falling back to
-  heuristic categories` - the container still runs correctly, it just uses
-  the old hand-picked category list instead of the trained one
+- if `router/model/` is empty (training pipeline skipped), stderr will show
+  `finetuned router weights not found, falling back to heuristic categories`
+  - it still runs correctly, just with the old hand-picked category list
+  instead of the trained one
 
 ## ROUTER_MODE
 
@@ -129,13 +109,12 @@ Sanity checks worth doing before submitting:
 - `heuristic` - always use `categories.py`'s hand-picked list, skips the
   trained classifier entirely
 
-## Push to the registry
+## Note on Track 1 submission
 
-```
-docker login ghcr.io -u <your-github-username>
-docker buildx build --platform linux/amd64 --tag ghcr.io/<your-github-username>/track1-agent:latest --push .
-```
-
-Remember to make the resulting package **public** in GitHub's package
-settings - GHCR images default to private even after a successful push,
-and a private image fails to pull at evaluation time.
+The hackathon's own Track 1 requirements specify a Docker image that reads
+`/input/tasks.json` and writes `/output/results.json`. This repo currently
+has no Dockerfile - if a container submission is needed later, `agent.py`
+already reads/writes those paths (via `INPUT_PATH`/`OUTPUT_PATH`, defaulting
+to `input/tasks.json`/`output/results.json`), so wrapping it back in a
+container is just adding a Dockerfile that copies these files in and sets
+those two env vars to `/input/tasks.json` and `/output/results.json`.

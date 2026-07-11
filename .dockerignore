@@ -1,8 +1,0 @@
-input/
-output/
-models/
-.env
-__pycache__/
-*.pyc
-data/
-router/checkpoints/

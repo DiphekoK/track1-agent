@@ -1,9 +1,10 @@
 """
 Entry point for the Track 1 agent.
 
-Reads /input/tasks.json, routes each task to either the local model
-(free) or Fireworks (costs tokens), and writes /output/results.json
-before exiting.
+Reads input/tasks.json, routes each task to either the local model
+(free) or Fireworks (costs tokens), and writes output/results.json
+before exiting. Paths are overridable via INPUT_PATH/OUTPUT_PATH env
+vars if this ever needs to run somewhere with a different layout.
 
 Routing decision comes from ROUTER_MODE:
   finetuned (default) - router/infer_router.py's trained classifier,
@@ -24,8 +25,8 @@ import local_llm
 import fireworks_client
 import baseline_router
 
-INPUT_PATH = "/input/tasks.json"
-OUTPUT_PATH = "/output/results.json"
+INPUT_PATH = os.environ.get("INPUT_PATH", "input/tasks.json")
+OUTPUT_PATH = os.environ.get("OUTPUT_PATH", "output/results.json")
 
 # leave a few minutes of buffer under the 10 minute hard limit so we
 # always have time to write out whatever we've got instead of getting
