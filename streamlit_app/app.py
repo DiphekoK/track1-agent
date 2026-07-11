@@ -1,24 +1,3 @@
-"""
-Streamlit deployment of the Query Router demo. Unlike the earlier
-Cloudflare/static-HTML attempt, Streamlit Community Cloud runs a real
-Python process, so this calls the actual project modules
-(categories.py, local_llm.py, fireworks_client.py, baseline_router.py,
-router/infer_router.py) directly - no separate backend server needed,
-Streamlit is both.
-
-Deploy: push to GitHub, then on share.streamlit.io point the app at
-streamlit_app/app.py and add these as Secrets (Settings > Secrets, TOML
-format) - same values as your local .env:
-    FIREWORKS_API_KEY = "..."
-    FIREWORKS_BASE_URL = "..."
-    MODEL_EXPENSIVE = "..."
-
-The local model (~1GB gguf) isn't in git - this downloads it on first
-run if it's not already present. Free-tier resource limits are a real
-risk for a 1.5B model plus the Streamlit process; if it doesn't fit,
-local-tier queries will fail over to Fireworks automatically (same
-fallback-on-error agent.py already has), not crash the app.
-"""
 import os
 import sys
 import time
@@ -177,24 +156,44 @@ if not cfg["router_available"]:
 if cfg["fireworks_error"]:
     st.warning(f"Fireworks isn't configured ({cfg['fireworks_error']}) - escalated queries will fail until secrets are set.")
 
-history = st.session_state.history
-finetuned_total = sum(h["ft"] for h in history)
-baseline_total = sum(h["bl"] for h in history)
-saved = baseline_total - finetuned_total
-saved_pct = round(saved / baseline_total * 100) if baseline_total else 0
-
+# Placeholders, not direct rendering - render_hero() below gets called
+# again after a run appends to history, so the numbers actually reflect
+# what just happened instead of staying one run behind (Streamlit
+# doesn't retroactively update widgets already sent to the page, so
+# computing these once up front and never refreshing them was the bug).
 st.divider()
 hero_left, hero_right = st.columns([1, 1])
 with hero_left:
-    st.caption("TOKENS SAVED BY FINE-TUNING · THIS SESSION")
-    st.markdown(f"## {saved_pct}% fewer" if baseline_total else "## —")
-    st.caption(f"{saved:,} tokens never spent vs. the prompt-based baseline" if baseline_total else "Run a query to see this")
+    hero_caption = st.empty()
+    hero_pct = st.empty()
+    hero_detail = st.empty()
 with hero_right:
     m1, m2, m3, m4 = st.columns(4)
-    m1.metric("Queries run", len(history))
-    m2.metric("Tokens saved", f"{saved:,}" if baseline_total else "—")
-    m3.metric("Fine-tuned total", f"{finetuned_total:,}")
-    m4.metric("Baseline total", f"{baseline_total:,}")
+    metric_queries = m1.empty()
+    metric_saved = m2.empty()
+    metric_ft = m3.empty()
+    metric_bl = m4.empty()
+
+
+def render_hero():
+    history = st.session_state.history
+    finetuned_total = sum(h["ft"] for h in history)
+    baseline_total = sum(h["bl"] for h in history)
+    saved = baseline_total - finetuned_total
+    saved_pct = round(saved / baseline_total * 100) if baseline_total else 0
+
+    hero_caption.caption("TOKENS SAVED BY FINE-TUNING · THIS SESSION")
+    hero_pct.markdown(f"## {saved_pct}% fewer" if baseline_total else "## —")
+    hero_detail.caption(
+        f"{saved:,} tokens never spent vs. the prompt-based baseline" if baseline_total else "Run a query to see this"
+    )
+    metric_queries.metric("Queries run", len(history))
+    metric_saved.metric("Tokens saved", f"{saved:,}" if baseline_total else "—")
+    metric_ft.metric("Fine-tuned total", f"{finetuned_total:,}")
+    metric_bl.metric("Baseline total", f"{baseline_total:,}")
+
+
+render_hero()
 
 st.divider()
 st.subheader("Enter a query")
@@ -282,7 +281,9 @@ if run_clicked:
         "bl": (bl.get("tokens") or 0) + answer_tokens,
         "saved": bl.get("tokens") or 0,
     })
+    render_hero()  # refresh the placeholders now that this run is in history
 
+history = st.session_state.history
 if history:
     st.divider()
     st.subheader("Tokens per query")
