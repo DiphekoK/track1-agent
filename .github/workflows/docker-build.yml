@@ -1,13 +1,15 @@
-# Sanity check for the Track 1 submission image. Doesn't push anywhere -
-# graders build the real thing themselves off this same repo - this just
-# catches a broken Dockerfile before submission instead of after, using
-# GitHub's bandwidth instead of whatever's left of mine.
+# Builds and verifies the Track 1 submission image, using GitHub's
+# bandwidth instead of whatever's left of mine. Graders build the real
+# thing themselves off this same repo regardless - the GHCR push at the
+# end is just so there's a pullable reference for the submission form,
+# not a replacement for that.
 #
 # The build step alone only proves the image compiles. The run step below
 # actually exercises it against input/tasks.json, same as a real submission
 # would - needs FIREWORKS_API_KEY / FIREWORKS_BASE_URL / MODEL_EXPENSIVE set
 # as repo secrets (Settings > Secrets and variables > Actions), same values
-# as the local .env. Skipped on PRs since forked PRs don't get secrets.
+# as the local .env. Skipped on PRs since forked PRs don't get secrets -
+# same reason the GHCR push is skipped there too.
 name: docker build
 
 on:
@@ -27,6 +29,10 @@ on:
       - "**.py"
       - .github/workflows/docker-build.yml
   workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build:
@@ -77,3 +83,19 @@ jobs:
         with:
           name: practice-results
           path: ci_output/results.json
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image to GHCR
+        if: github.event_name != 'pull_request'
+        run: |
+          docker tag track1-agent ghcr.io/diphekok/track1-agent:latest
+          docker tag track1-agent ghcr.io/diphekok/track1-agent:${{ github.sha }}
+          docker push ghcr.io/diphekok/track1-agent:latest
+          docker push ghcr.io/diphekok/track1-agent:${{ github.sha }}
