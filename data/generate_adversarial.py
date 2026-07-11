@@ -96,6 +96,96 @@ _q("math",
    "the already-discounted price. What is the final price?",
    str(150 * 0.9 * 0.95), "numeric")
 
+_q("math",
+   "A tank starts with 600 liters. It drains at 10 liters per minute for "
+   "12 minutes, then is refilled at 15 liters per minute for 10 minutes, "
+   "then drains again at 6 liters per minute for 8 minutes. How many "
+   "liters are in the tank now?",
+   str(600 - 10 * 12 + 15 * 10 - 6 * 8), "numeric")
+
+_q("math",
+   "A store has 500 items. It sells 30% on Monday and 25 more on Tuesday. "
+   "How many items remain?",
+   str(500 - round(500 * 0.30) - 25), "numeric")
+
+_q("math",
+   "A pool starts empty. It's filled at 20 liters per minute for 15 "
+   "minutes, then drained at 8 liters per minute for 6 minutes, then "
+   "filled at 10 liters per minute for 5 minutes. How many liters are in "
+   "the pool now?",
+   str(20 * 15 - 8 * 6 + 10 * 5), "numeric")
+
+_q("math",
+   "A seller buys widgets for $12 each and sells them for $20 each. After "
+   "selling 55 widgets and paying $80 in fixed expenses, what is the "
+   "total profit?",
+   str((20 - 12) * 55 - 80), "numeric")
+
+_q("math",
+   "What is the average of these numbers: 15, 22, 8, 30, 19, 11?",
+   str(sum([15, 22, 8, 30, 19, 11]) / 6), "numeric")
+
+_q("math",
+   "A price starts at $350. It increases by 15%, then decreases by 20%. "
+   "What is the final price?",
+   str(350 * 1.15 * 0.8), "numeric")
+
+_q("math",
+   "One worker assembles 4 units per hour and works 7 hours. A second "
+   "worker assembles 6 units per hour and works 5 hours. How many units "
+   "did they assemble in total?",
+   str(4 * 7 + 6 * 5), "numeric")
+
+_q("math",
+   "An item costs $220. It's discounted 15%, then an additional 10% off "
+   "the already-discounted price. What is the final price?",
+   str(220 * 0.85 * 0.9), "numeric")
+
+_q("math",
+   "A tank starts with 750 liters. It drains at 12 liters per minute for "
+   "10 minutes, then is refilled at 18 liters per minute for 15 minutes, "
+   "then drains again at 9 liters per minute for 12 minutes. How many "
+   "liters are in the tank now?",
+   str(750 - 12 * 10 + 18 * 15 - 9 * 12), "numeric")
+
+_q("math",
+   "A store has 420 items. It sells 25% on Monday and 40 more on Tuesday. "
+   "How many items remain?",
+   str(420 - round(420 * 0.25) - 40), "numeric")
+
+_q("math",
+   "A pool starts empty. It's filled at 30 liters per minute for 10 "
+   "minutes, then drained at 12 liters per minute for 8 minutes, then "
+   "filled at 5 liters per minute for 20 minutes. How many liters are in "
+   "the pool now?",
+   str(30 * 10 - 12 * 8 + 5 * 20), "numeric")
+
+_q("math",
+   "A seller buys widgets for $5 each and sells them for $9 each. After "
+   "selling 80 widgets and paying $50 in fixed expenses, what is the "
+   "total profit?",
+   str((9 - 5) * 80 - 50), "numeric")
+
+_q("math",
+   "What is the average of these numbers: 4, 16, 9, 25, 6?",
+   str(sum([4, 16, 9, 25, 6]) / 5), "numeric")
+
+_q("math",
+   "A price starts at $500. It increases by 10%, then decreases by 15%. "
+   "What is the final price?",
+   str(500 * 1.10 * 0.85), "numeric")
+
+_q("math",
+   "One worker assembles 8 units per hour and works 4 hours. A second "
+   "worker assembles 2 units per hour and works 12 hours. How many units "
+   "did they assemble in total?",
+   str(8 * 4 + 2 * 12), "numeric")
+
+_q("math",
+   "An item costs $80. It's discounted 20%, then an additional 5% off "
+   "the already-discounted price. What is the final price?",
+   str(80 * 0.8 * 0.95), "numeric")
+
 # ------------------------------------------------------------- sentiment
 
 for template, product, label in [
@@ -107,6 +197,22 @@ for template, product, label in [
     ("The {p} arrived on time and matches the listing.", "running shoes", "neutral"),
     ("I'm impressed by how well the {p} performs given the price.", "desk lamp", "positive"),
     ("Regret buying this {p}, it's noisy and poorly built.", "backpack", "negative"),
+    ("The {p} is solid but a bit overpriced for what it offers.", "keyboard", "neutral"),
+    ("Absolutely love the {p}, changed my daily routine for the better.", "water bottle", "positive"),
+    ("The {p} stopped charging after a week, very disappointing.", "power bank", "negative"),
+    ("The {p} works as described, no surprises either way.", "phone case", "neutral"),
+    ("Fantastic build quality on this {p}, exceeded what I paid for.", "toolset", "positive"),
+    ("The {p} arrived damaged and customer service was unhelpful.", "monitor", "negative"),
+    ("It's an average {p}, gets the job done without any flair.", "umbrella", "neutral"),
+    ("This {p} is a game changer, I use it every single day now.", "notebook", "positive"),
+    ("The {p} is cheaply made and fell apart within a month.", "sunglasses", "negative"),
+    ("The {p} matches the photos and specs listed exactly.", "desk mat", "neutral"),
+    ("I'm thrilled with this {p}, it's better than the pricier alternatives.", "space heater", "positive"),
+    ("Terrible experience, the {p} overheated and shut off on its own.", "hair dryer", "negative"),
+    ("The {p} is fine for occasional use, nothing special.", "picnic blanket", "neutral"),
+    ("Couldn't be happier with the {p}, it's exactly what I needed.", "tool belt", "positive"),
+    ("The {p} misses basic features I expected at this price.", "webcam", "negative"),
+    ("The {p} performs consistently, no complaints so far.", "router", "neutral"),
 ]:
     _q("sentiment", f"Classify the sentiment of this review: {template.format(p=product)}", label, "label")
 
@@ -125,6 +231,30 @@ for prompt, entities in [
      ["Priya Nair", "Meridian Labs", "Singapore", "2024"]),
     ("Extract all named entities and their types from: Carlos Mendes opened a new office for Bright Path Robotics in Lisbon last November.",
      ["Carlos Mendes", "Bright Path Robotics", "Lisbon", "November"]),
+    ("Extract all named entities and their types from: Elena Petrova launched a research lab for Quantum Bridge in Warsaw this April.",
+     ["Elena Petrova", "Quantum Bridge", "Warsaw", "April"]),
+    ("Extract all named entities and their types from: Jonas Berg joined Nordwind Systems as CFO in Stockholm in 2023.",
+     ["Jonas Berg", "Nordwind Systems", "Stockholm", "2023"]),
+    ("Extract all named entities and their types from: Fatima Zahra opened a design studio for Sable and Co in Casablanca last June.",
+     ["Fatima Zahra", "Sable and Co", "Casablanca", "June"]),
+    ("Extract all named entities and their types from: Ravi Deshmukh presented the quarterly report for Orion Freight in Mumbai this February.",
+     ["Ravi Deshmukh", "Orion Freight", "Mumbai", "February"]),
+    ("Extract all named entities and their types from: Clara Jansen relocated to Toronto to head operations at Birchwood Systems in August.",
+     ["Clara Jansen", "Toronto", "Birchwood Systems", "August"]),
+    ("Extract all named entities and their types from: Tomas Novak signed a licensing deal with Halcyon Robotics in Prague on May 9, 2024.",
+     ["Tomas Novak", "Halcyon Robotics", "Prague", "May 9"]),
+    ("Extract all named entities and their types from: Grace Muthoni founded Savanna Analytics in Nairobi in 2022.",
+     ["Grace Muthoni", "Savanna Analytics", "Nairobi", "2022"]),
+    ("Extract all named entities and their types from: Marco Rinaldi joined Vertex Motors as lead engineer in Turin last October.",
+     ["Marco Rinaldi", "Vertex Motors", "Turin", "October"]),
+    ("Extract all named entities and their types from: Aiko Tanaka presented the new roadmap for Sakura Robotics in Osaka this November.",
+     ["Aiko Tanaka", "Sakura Robotics", "Osaka", "November"]),
+    ("Extract all named entities and their types from: Diego Fernandez opened a satellite office for Andes Cloud in Bogota in March.",
+     ["Diego Fernandez", "Andes Cloud", "Bogota", "March"]),
+    ("Extract all named entities and their types from: Ingrid Solberg joined Fjord Energy as director in Bergen in 2021.",
+     ["Ingrid Solberg", "Fjord Energy", "Bergen", "2021"]),
+    ("Extract all named entities and their types from: Samuel Okoye led the expansion of Delta Freight into Accra this July.",
+     ["Samuel Okoye", "Delta Freight", "Accra", "July"]),
 ]:
     _q("ner", prompt, entities, "keywords")
 
@@ -147,6 +277,46 @@ for text, keywords in [
      "securing a small business loan, with the first new location "
      "expected to open by the end of the year.",
      ["bakery", "loan", "expand"]),
+    ("The transit authority confirmed that the downtown subway extension "
+     "will open two months ahead of schedule, following faster-than-"
+     "expected tunnel construction.",
+     ["subway", "ahead of schedule", "tunnel"]),
+    ("A regional hospital network announced a partnership with a "
+     "telehealth startup to provide free virtual consultations to rural "
+     "patients starting next spring.",
+     ["hospital", "telehealth", "rural"]),
+    ("The national park service reported that wolf reintroduction efforts "
+     "have led to a marked recovery in local elk and vegetation "
+     "populations over the past decade.",
+     ["wolf", "elk", "vegetation"]),
+    ("A mid-sized furniture manufacturer is shifting its entire production "
+     "line to reclaimed wood, citing both cost savings and demand from "
+     "environmentally conscious buyers.",
+     ["furniture", "reclaimed wood", "demand"]),
+    ("City officials unveiled a plan to convert an abandoned rail line "
+     "into a fifteen-kilometre pedestrian and cycling greenway, with the "
+     "first section opening next summer.",
+     ["rail line", "greenway", "cycling"]),
+    ("Researchers found that a newly discovered species of deep-sea coral "
+     "can survive water temperatures previously thought lethal to most "
+     "reef-building organisms.",
+     ["coral", "deep-sea", "temperatures"]),
+    ("The school district approved funding for a free breakfast program "
+     "in all elementary schools after a pilot showed improved attendance "
+     "and test scores.",
+     ["breakfast", "elementary", "attendance"]),
+    ("A logistics company is testing electric delivery bikes in three "
+     "congested city centers, reporting a thirty percent drop in average "
+     "delivery times so far.",
+     ["electric", "delivery bikes", "delivery times"]),
+    ("The museum announced it will digitize its entire photo archive over "
+     "the next three years, making over two hundred thousand historical "
+     "images publicly searchable online.",
+     ["digitize", "photo archive", "historical"]),
+    ("A community farming cooperative doubled its harvest yield this year "
+     "after switching to a crop rotation system recommended by a local "
+     "agricultural extension office.",
+     ["farming", "harvest", "crop rotation"]),
 ]:
     _q("summarization", f"Summarize the following in exactly one sentence: {text}", keywords, "keywords")
 
@@ -161,6 +331,18 @@ for prompt, keywords in [
     ("Who developed the theory of general relativity, and in what year was it published?",
      ["Einstein", "1915"]),
     ("What is the boiling point of water at sea level in Celsius?", ["100"]),
+    ("What is the capital of Japan?", ["Tokyo"]),
+    ("What is the chemical symbol for gold?", ["Au"]),
+    ("What planet is known as the Red Planet?", ["Mars"]),
+    ("Who wrote the play Romeo and Juliet?", ["Shakespeare"]),
+    ("What is the largest ocean on Earth?", ["Pacific"]),
+    ("What gas do plants primarily absorb during photosynthesis?", ["carbon dioxide"]),
+    ("What is the freezing point of water in Celsius?", ["0"]),
+    ("Who painted the Mona Lisa?", ["da Vinci"]),
+    ("What is the smallest prime number?", ["2"]),
+    ("What country is home to the Great Barrier Reef?", ["Australia"]),
+    ("What is the official currency of Japan called?", ["yen"]),
+    ("What is the tallest mountain in the world?", ["Everest"]),
 ]:
     _q("factual", prompt, keywords, "keywords")
 
@@ -227,6 +409,160 @@ _q("logic",
    "Priya plays rugby. Sana doesn't play golf. Who plays golf?",
    [n for n, v in _g.items() if v == "golf"][0], "exact")
 
+_h = _solve_unique(
+    ["Zara", "Finn", "Talia"], ["tea", "soda", "juice"],
+    [lambda a: a["Zara"] != "soda", lambda a: a["Finn"] == "juice"],
+)
+_q("logic",
+   "Three friends, Zara, Finn, and Talia, each drink a different "
+   "beverage: tea, soda, juice. Zara doesn't drink soda. Finn drinks "
+   "juice. Who drinks tea?",
+   [n for n, v in _h.items() if v == "tea"][0], "exact")
+
+_i = _solve_unique(
+    ["Omar", "Bea", "Nils"], ["chess", "checkers", "dominoes"],
+    [lambda a: a["Omar"] != "dominoes", lambda a: a["Bea"] == "checkers"],
+)
+_q("logic",
+   "Three friends, Omar, Bea, and Nils, each play a different game: "
+   "chess, checkers, dominoes. Omar doesn't play dominoes. Bea plays "
+   "checkers. Who plays dominoes?",
+   [n for n, v in _i.items() if v == "dominoes"][0], "exact")
+
+_j = _solve_unique(
+    ["Petra", "Junho", "Alexei"], ["hiking", "swimming", "cycling"],
+    [lambda a: a["Petra"] != "cycling", lambda a: a["Junho"] == "swimming"],
+)
+_q("logic",
+   "Three friends, Petra, Junho, and Alexei, each prefer a different "
+   "activity: hiking, swimming, cycling. Petra doesn't prefer cycling. "
+   "Junho prefers swimming. Who prefers cycling?",
+   [n for n, v in _j.items() if v == "cycling"][0], "exact")
+
+_k = _solve_unique(
+    ["Ines", "Cormac", "Wren"], ["cake", "pie", "tart"],
+    [lambda a: a["Ines"] != "tart", lambda a: a["Cormac"] == "pie"],
+)
+_q("logic",
+   "Three friends, Ines, Cormac, and Wren, each ordered a different "
+   "dessert: cake, pie, tart. Ines didn't order the tart. Cormac ordered "
+   "pie. Who ordered the tart?",
+   [n for n, v in _k.items() if v == "tart"][0], "exact")
+
+_l = _solve_unique(
+    ["Soren", "Amara", "Dax"], ["guitar", "drums", "bass"],
+    [lambda a: a["Soren"] != "bass", lambda a: a["Amara"] == "drums"],
+)
+_q("logic",
+   "Three musicians, Soren, Amara, and Dax, each play a different "
+   "instrument: guitar, drums, bass. Soren doesn't play bass. Amara "
+   "plays drums. Who plays bass?",
+   [n for n, v in _l.items() if v == "bass"][0], "exact")
+
+_m = _solve_unique(
+    ["Yara", "Bram", "Isla"], ["sedan", "truck", "van"],
+    [lambda a: a["Yara"] != "van", lambda a: a["Bram"] == "truck"],
+)
+_q("logic",
+   "Three friends, Yara, Bram, and Isla, each drive a different vehicle: "
+   "sedan, truck, van. Yara doesn't drive the van. Bram drives the "
+   "truck. Who drives the van?",
+   [n for n, v in _m.items() if v == "van"][0], "exact")
+
+_n = _solve_unique(
+    ["Milo", "Reza", "Ffion"], ["soccer", "baseball", "hockey"],
+    [lambda a: a["Milo"] != "hockey", lambda a: a["Reza"] == "baseball"],
+)
+_q("logic",
+   "Three friends, Milo, Reza, and Ffion, each play a different sport: "
+   "soccer, baseball, hockey. Milo doesn't play hockey. Reza plays "
+   "baseball. Who plays hockey?",
+   [n for n, v in _n.items() if v == "hockey"][0], "exact")
+
+_o = _solve_unique(
+    ["Petra", "Doran", "Liv", "Amos"], ["pasta", "salad", "soup", "sandwich"],
+    [lambda a: a["Petra"] != "pasta", lambda a: a["Petra"] != "sandwich",
+     lambda a: a["Doran"] == "salad", lambda a: a["Liv"] != "sandwich"],
+)
+_q("logic",
+   "Four friends, Petra, Doran, Liv, and Amos, each ordered a different "
+   "dish: pasta, salad, soup, sandwich. Petra didn't order pasta or the "
+   "sandwich. Doran ordered salad. Liv didn't order the sandwich. Who "
+   "ordered the sandwich?",
+   [n for n, v in _o.items() if v == "sandwich"][0], "exact")
+
+_p = _solve_unique(
+    ["Enzo", "Ruth", "Kwame", "Sena"], ["math", "science", "art", "music"],
+    [lambda a: a["Enzo"] != "art", lambda a: a["Enzo"] != "music",
+     lambda a: a["Ruth"] == "science", lambda a: a["Kwame"] != "music"],
+)
+_q("logic",
+   "Four students, Enzo, Ruth, Kwame, and Sena, each study a different "
+   "subject: math, science, art, music. Enzo doesn't study art or "
+   "music. Ruth studies science. Kwame doesn't study music. Who studies "
+   "music?",
+   [n for n, v in _p.items() if v == "music"][0], "exact")
+
+_r = _solve_unique(
+    ["Odette", "Hassan", "Ines", "Bo"], ["spring", "summer", "autumn", "winter"],
+    [lambda a: a["Odette"] != "summer", lambda a: a["Odette"] != "winter",
+     lambda a: a["Hassan"] == "autumn", lambda a: a["Ines"] != "winter"],
+)
+_q("logic",
+   "Four friends, Odette, Hassan, Ines, and Bo, each have a different "
+   "favorite season: spring, summer, autumn, winter. Odette's favorite "
+   "isn't summer or winter. Hassan's favorite is autumn. Ines's favorite "
+   "isn't winter. Whose favorite season is winter?",
+   [n for n, v in _r.items() if v == "winter"][0], "exact")
+
+_s = _solve_unique(
+    ["Farah", "Otis", "Maren", "Cato"], ["blue", "silver", "black", "white"],
+    [lambda a: a["Farah"] != "black", lambda a: a["Farah"] != "white",
+     lambda a: a["Otis"] == "silver", lambda a: a["Maren"] != "white"],
+)
+_q("logic",
+   "Four friends, Farah, Otis, Maren, and Cato, each have a different "
+   "colored phone: blue, silver, black, white. Farah's phone isn't black "
+   "or white. Otis's phone is silver. Maren's phone isn't white. Whose "
+   "phone is white?",
+   [n for n, v in _s.items() if v == "white"][0], "exact")
+
+_t = _solve_unique(
+    ["Idris", "Noelle", "Petros", "Wyn"], ["north", "south", "east", "west"],
+    [lambda a: a["Idris"] != "east", lambda a: a["Idris"] != "west",
+     lambda a: a["Noelle"] == "south", lambda a: a["Petros"] != "west"],
+)
+_q("logic",
+   "Four coworkers, Idris, Noelle, Petros, and Wyn, were each assigned a "
+   "different region: north, south, east, west. Idris wasn't assigned "
+   "east or west. Noelle was assigned south. Petros wasn't assigned "
+   "west. Who was assigned west?",
+   [n for n, v in _t.items() if v == "west"][0], "exact")
+
+_u = _solve_unique(
+    ["Beatrix", "Njeri", "Osman", "Tamsin"], ["monday", "tuesday", "wednesday", "thursday"],
+    [lambda a: a["Beatrix"] != "wednesday", lambda a: a["Beatrix"] != "thursday",
+     lambda a: a["Njeri"] == "tuesday", lambda a: a["Osman"] != "thursday"],
+)
+_q("logic",
+   "Four coworkers, Beatrix, Njeri, Osman, and Tamsin, each work a "
+   "different shift day: Monday, Tuesday, Wednesday, Thursday. Beatrix "
+   "doesn't work Wednesday or Thursday. Njeri works Tuesday. Osman "
+   "doesn't work Thursday. Who works Thursday?",
+   [n for n, v in _u.items() if v == "thursday"][0], "exact")
+
+_v = _solve_unique(
+    ["Quinn", "Radu", "Selin", "Toby"], ["hiking-boots", "sandals", "sneakers", "slippers"],
+    [lambda a: a["Quinn"] != "sneakers", lambda a: a["Quinn"] != "slippers",
+     lambda a: a["Radu"] == "sandals", lambda a: a["Selin"] != "slippers"],
+)
+_q("logic",
+   "Four friends, Quinn, Radu, Selin, and Toby, each prefer different "
+   "footwear: hiking boots, sandals, sneakers, slippers. Quinn doesn't "
+   "prefer sneakers or slippers. Radu prefers sandals. Selin doesn't "
+   "prefer slippers. Who prefers slippers?",
+   [n for n, v in _v.items() if v == "slippers"][0], "exact")
+
 # ----------------------------------------------------------- code_debug
 
 _q("code_debug",
@@ -287,6 +623,116 @@ _q("code_debug",
        {"args": [1], "expected": 1},
    ]}, "exec")
 
+_q("code_debug",
+   "This function should sum the even numbers in a list but has a bug:\n"
+   "def sum_evens(nums):\n    total = 0\n"
+   "    for i in range(len(nums) - 1):\n"
+   "        if nums[i] % 2 == 0:\n            total += nums[i]\n"
+   "    return total\nFind and fix it.",
+   {"function_name": "sum_evens", "tests": [
+       {"args": [[1, 2, 3, 4]], "expected": 6},
+       {"args": [[2, 4, 6]], "expected": 12},
+       {"args": [[1, 3, 5]], "expected": 0},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should return whether someone is an adult (18 or "
+   "older) but has a bug:\ndef is_adult(age):\n    return age > 18\n"
+   "Find and fix it.",
+   {"function_name": "is_adult", "tests": [
+       {"args": [18], "expected": True},
+       {"args": [17], "expected": False},
+       {"args": [19], "expected": True},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should return the smallest number in a list but has a "
+   "bug:\ndef find_min(nums):\n    m = 0\n    for n in nums:\n"
+   "        if n < m:\n            m = n\n    return m\nFind and fix it.",
+   {"function_name": "find_min", "tests": [
+       {"args": [[5, 3, 8, 1]], "expected": 1},
+       {"args": [[10, 20, 30]], "expected": 10},
+       {"args": [[-5, -1, -9]], "expected": -9},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should title-case every word in a string but has a "
+   "bug:\ndef capitalize_words(s):\n    return s.lower()\n"
+   "Find and fix it.",
+   {"function_name": "capitalize_words", "tests": [
+       {"args": ["hello world"], "expected": "Hello World"},
+       {"args": ["PYTHON"], "expected": "Python"},
+       {"args": ["a b c"], "expected": "A B C"},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should count how many times a value appears in a list "
+   "but has a bug:\ndef count_occurrences(items, target):\n"
+   "    count = 0\n    for item in items:\n        if item == target:\n"
+   "            count = 1\n    return count\nFind and fix it.",
+   {"function_name": "count_occurrences", "tests": [
+       {"args": [[1, 2, 1, 1, 3], 1], "expected": 3},
+       {"args": [["x", "y"], "z"], "expected": 0},
+       {"args": [[5, 5, 5], 5], "expected": 3},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should sum the digits of a number but has a bug:\n"
+   "def digit_sum(n):\n    total = 0\n    n = abs(n)\n"
+   "    while n > 0:\n        total += n % 10\n        n = n // 100\n"
+   "    return total\nFind and fix it.",
+   {"function_name": "digit_sum", "tests": [
+       {"args": [123], "expected": 6},
+       {"args": [9], "expected": 9},
+       {"args": [-45], "expected": 9},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should remove duplicates from a list while keeping "
+   "first-occurrence order but has a bug:\n"
+   "def dedupe(items):\n    return list(set(items))\nFind and fix it.",
+   {"function_name": "dedupe", "tests": [
+       {"args": [[5, 3, 3, 5, 1]], "expected": [5, 3, 1]},
+       {"args": [[9, 2, 9, 7]], "expected": [9, 2, 7]},
+       {"args": [[4, 4, 4, 4]], "expected": [4]},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should check if two strings are anagrams of each "
+   "other, ignoring case, but has a bug:\n"
+   "def is_anagram(a, b):\n    return sorted(a) == sorted(b)\n"
+   "Find and fix it.",
+   {"function_name": "is_anagram", "tests": [
+       {"args": ["Listen", "silent"], "expected": True},
+       {"args": ["abc", "abd"], "expected": False},
+       {"args": ["Dormitory", "dirtyroom"], "expected": True},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should return the running (cumulative) total before "
+   "each number is added but has a bug:\n"
+   "def running_total(nums):\n    result = []\n    total = 0\n"
+   "    for n in nums:\n        result.append(total)\n        total += n\n"
+   "    return result\nIt should instead return the cumulative total "
+   "after each number is added. Find and fix it.",
+   {"function_name": "running_total", "tests": [
+       {"args": [[1, 2, 3]], "expected": [1, 3, 6]},
+       {"args": [[5, 5, 5]], "expected": [5, 10, 15]},
+       {"args": [[2]], "expected": [2]},
+   ]}, "exec")
+
+_q("code_debug",
+   "This function should return whether a list is sorted in ascending "
+   "order but has a bug:\ndef is_sorted(nums):\n"
+   "    for i in range(len(nums) - 1):\n"
+   "        if nums[i] > nums[i + 1]:\n            return True\n"
+   "    return False\nFind and fix it.",
+   {"function_name": "is_sorted", "tests": [
+       {"args": [[1, 2, 3]], "expected": True},
+       {"args": [[3, 1, 2]], "expected": False},
+       {"args": [[5]], "expected": True},
+   ]}, "exec")
+
 # ------------------------------------------------------------- code_gen
 
 _q("code_gen",
@@ -345,6 +791,104 @@ _q("code_gen",
        {"args": [1], "expected": False},
        {"args": [17], "expected": True},
        {"args": [18], "expected": False},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called gcd that returns the greatest common "
+   "divisor of two non-negative integers.",
+   {"function_name": "gcd", "tests": [
+       {"args": [12, 18], "expected": 6},
+       {"args": [17, 5], "expected": 1},
+       {"args": [0, 5], "expected": 5},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called remove_duplicates that returns a list "
+   "with duplicate values removed, keeping only the first occurrence of "
+   "each value in its original order.",
+   {"function_name": "remove_duplicates", "tests": [
+       {"args": [[1, 2, 2, 3, 1]], "expected": [1, 2, 3]},
+       {"args": [[5, 5, 5]], "expected": [5]},
+       {"args": [[]], "expected": []},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called title_case that returns a copy of a "
+   "string with the first letter of every word capitalized and the rest "
+   "lowercase.",
+   {"function_name": "title_case", "tests": [
+       {"args": ["the quick fox"], "expected": "The Quick Fox"},
+       {"args": ["HELLO"], "expected": "Hello"},
+       {"args": ["a"], "expected": "A"},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called sum_of_digits that returns the sum of "
+   "the digits of the absolute value of a given integer.",
+   {"function_name": "sum_of_digits", "tests": [
+       {"args": [1234], "expected": 10},
+       {"args": [0], "expected": 0},
+       {"args": [-56], "expected": 11},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called is_leap_year that returns True if a "
+   "given year is a leap year (divisible by 4, except centuries which "
+   "must be divisible by 400), and False otherwise.",
+   {"function_name": "is_leap_year", "tests": [
+       {"args": [2024], "expected": True},
+       {"args": [1900], "expected": False},
+       {"args": [2000], "expected": True},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called reverse_words that takes a sentence "
+   "and returns it with the order of its words reversed, keeping each "
+   "word itself unchanged.",
+   {"function_name": "reverse_words", "tests": [
+       {"args": ["hello world"], "expected": "world hello"},
+       {"args": ["a b c"], "expected": "c b a"},
+       {"args": ["python"], "expected": "python"},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called most_common_char that returns the "
+   "character that appears most often in a string (you can assume there "
+   "is always a single unique most-frequent character in the test "
+   "inputs).",
+   {"function_name": "most_common_char", "tests": [
+       {"args": ["aabbbcc"], "expected": "b"},
+       {"args": ["xxyz"], "expected": "x"},
+       {"args": ["wwwyyyyz"], "expected": "y"},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called is_perfect_square that returns True "
+   "if a given non-negative integer is a perfect square, and False "
+   "otherwise.",
+   {"function_name": "is_perfect_square", "tests": [
+       {"args": [16], "expected": True},
+       {"args": [15], "expected": False},
+       {"args": [0], "expected": True},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called rotate_list that rotates a list to "
+   "the left by k positions (k may be larger than the list's length).",
+   {"function_name": "rotate_list", "tests": [
+       {"args": [[1, 2, 3, 4, 5], 2], "expected": [3, 4, 5, 1, 2]},
+       {"args": [[1, 2, 3], 0], "expected": [1, 2, 3]},
+       {"args": [[1, 2], 5], "expected": [2, 1]},
+   ]}, "exec")
+
+_q("code_gen",
+   "Write a Python function called word_count that returns the number "
+   "of words in a string, treating any run of whitespace as a "
+   "separator.",
+   {"function_name": "word_count", "tests": [
+       {"args": ["hello world foo"], "expected": 3},
+       {"args": [""], "expected": 0},
+       {"args": ["  spaced   out  "], "expected": 2},
    ]}, "exec")
 
 
